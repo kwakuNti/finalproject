@@ -142,25 +142,6 @@
             </div>
         </div>
     </main>
-    <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        <?php
-                    if (isset($_GET['msg']) && $_GET['msg'] === "Incorrect password") {
-                        echo "swal('Warning', 'Incorrect password', 'warning');";
-                    }
-                    if (isset($_GET['msg']) && $_GET['msg'] === "success") {
-                      echo "swal('Success', 'success', 'success');";
-                  }
-                    if (isset($_GET['msg']) && $_GET['msg'] === "User not registered") {
-                        echo "swal('Warning', 'User not registered', 'warning');";
-                    }
-                    if (isset($_GET['msg']) && $_GET['msg'] === "Invalid password") {
-                        echo "swal('Warning', 'Invalid password', 'warning');";
-                    }
-                    ?>
-
-    });
-    </script>
     <!-- Toast notification -->
     <div class="toast">
         <div class="toast-content">

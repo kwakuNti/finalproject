@@ -704,8 +704,36 @@ opacity: 0;
 
 
 
+/* Add this CSS to your stylesheet */
+.custom-popup-class {
+  width: 80%; /* Adjust the width as needed */
+}
 
-
+    /* Add CSS for flight details table */
+    .flight-details-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+  }
+  
+  .flight-details-table th,
+  .flight-details-table td {
+      border: 1px solid #dddddd;
+      padding: 8px;
+      text-align: left;
+  }
+  
+  .flight-details-table th {
+      background-color: #f2f2f2;
+  }
+  
+  .flight-details-table tbody tr:nth-child(even) {
+      background-color: #f9f9f9;
+  }
+  
+  .flight-details-table tbody tr:hover {
+      background-color: #f2f2f2;
+  }
 
 
 

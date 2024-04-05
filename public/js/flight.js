@@ -48,4 +48,3 @@ $( function() {
     $( "#sourcedatepicker" ).datepicker();
 	$( "#destinationdatepicker" ).datepicker();
 } );
-

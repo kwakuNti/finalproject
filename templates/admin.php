@@ -14,6 +14,9 @@ checkLogin();
     <title>Admin Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" integrity="sha512-wnea99uKIC3TJF7v4eKk4Y+lMz2Mklv18+r4na2Gn1abDRPPOeef95xTzdwGD9e6zXJBteMIhZ1+68QC5byJZw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="../public/css/admin.css">
+    <script src="../public/js/admin.js"></script>
+
+    
 </head>
 <body class="bg-gray-200 flex justify-center items-center h-screen w-screen">
     <div class="container overflow-hidden rounded-2xl">
@@ -148,7 +151,7 @@ checkLogin();
        
             <div id="destinationsSection" class="bg-white p-10 relative">
                 <!-- Destinations section content -->
-                <div class="overflow-auto" style="max-height: 400px;">
+                <div class="overflow-auto" style="max-height: 200px;">
 
                 <table class="w-full">
         <thead>
@@ -212,6 +215,8 @@ checkLogin();
     }
 </script>
 
+
+
             </div>
             
             </div>
@@ -220,31 +225,156 @@ checkLogin();
     <div class="modal" id="addFlightModal">
     <div class="bg-white p-6 rounded-lg">
         <h1 class="text-xl font-semibold mb-4">Add Flight</h1>
-        <form id="addFlightForm" action="add_flight.php" method="POST">
+        <form id="addFlightForm" action="../actions/add_flight.php" method="POST">
             <div class="mb-4">
                 <label for="flightCode" class="block text-sm font-medium text-gray-700">Flight Code</label>
                 <input type="text" name="flightCode" id="flightCode" class="mt-1 p-2 border border-gray-300 rounded-md w-full" required>
             </div>
+            
             <div class="mb-4">
                 <label for="originDestination" class="block text-sm font-medium text-gray-700">Origin Destination ID</label>
-                <input type="number" name="originDestination" id="originDestination" class="mt-1 p-2 border border-gray-300 rounded-md w-full" required>
+                <select name="originDestination" id="originDestination" class="mt-1 p-2 border border-gray-300 rounded-md w-full" required>
+                    <option value="">Select Origin Destination</option>
+                    <?php
+                        populateDropdownOptions($conn);
+                    ?>
+                </select>
             </div>
             <div class="mb-4">
                 <label for="destinationDestination" class="block text-sm font-medium text-gray-700">Destination Destination ID</label>
-                <input type="number" name="destinationDestination" id="destinationDestination" class="mt-1 p-2 border border-gray-300 rounded-md w-full" required>
+                <select name="destinationDestination" id="destinationDestination" class="mt-1 p-2 border border-gray-300 rounded-md w-full" required>
+                    <option value="">Select Destination Destination</option>
+                    <?php
+                        populateDropdownOptions($conn);
+                    ?>
+                </select>            </div>
+                <div class="mb-4">
+    <label for="departureDatetime" class="block text-sm font-medium text-gray-700">Departure Datetime</label>
+    <input type="datetime-local" name="departureDatetime" id="departureDatetime" class="mt-1 p-2 border border-gray-300 rounded-md w-full" required>
+</div>
+
+<div class="mb-4">
+    <label for="arrivalDatetime" class="block text-sm font-medium text-gray-700">Arrival Datetime</label>
+    <input type="datetime-local" name="arrivalDatetime" id="arrivalDatetime" class="mt-1 p-2 border border-gray-300 rounded-md w-full" required>
+</div>
+
+            <div class="mb-4">
+                <label for="duration" class="block text-sm font-medium text-gray-700">Duration (in hours)</label>
+                <input type="number" name="duration" id="duration" class="mt-1 p-2 border border-gray-300 rounded-md w-full" required>
+            </div>
+            <div class="mb-4">
+                <label for="stops" class="block text-sm font-medium text-gray-700">Stops</label>
+                <input type="number" name="stops" id="stops" class="mt-1 p-2 border border-gray-300 rounded-md w-full" required>
+            </div>
+            <div class="mb-4">
+                <label for="economySeats" class="block text-sm font-medium text-gray-700">Economy Seats</label>
+                <input type="number" name="economySeats" id="economySeats" class="mt-1 p-2 border border-gray-300 rounded-md w-full" required>
+            </div>
+            <div class="mb-4">
+                <label for="businessSeats" class="block text-sm font-medium text-gray-700">Business Seats</label>
+                <input type="number" name="businessSeats" id="businessSeats" class="mt-1 p-2 border border-gray-300 rounded-md w-full" required>
+            </div>
+
+            <div class="mb-4">
+                <label for="firstSeats" class="block text-sm font-medium text-gray-700">First Seats</label>
+                <input type="number" name="firstSeats" id="firstSeats" class="mt-1 p-2 border border-gray-300 rounded-md w-full" required>
             </div>
             <!-- Add other input fields for the remaining flight details -->
-            <!-- Remember to add appropriate validation and formatting for each input field -->
             <div class="flex justify-end">
                 <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Submit</button>
-                <button type="button" id="cancelButton" class="ml-4 px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400" onclick="closeModal()">Cancel</button>
+                <button type="button" id="cancelButton" class="ml-4 px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400" >Cancel</button>
             </div>
         </form>
     </div>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    const message = urlParams.get('msg');
+    if (message) {
+        swal("Notice", message, "info");
+    }
+});
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const message = urlParams.get('msg');
+        if (message) {
+            Swal.fire({
+                title: 'Notice',
+                text: message,
+                icon: 'info',
+                confirmButtonText: 'OK'
+            });
+        }
 
+        // Function to validate the flight form
+        function validateFlightForm() {
+            const flightCode = document.getElementById('flightCode').value;
+            const duration = document.getElementById('duration').value;
+            const stops = document.getElementById('stops').value;
+            const economySeats = document.getElementById('economySeats').value;
+            const businessSeats = document.getElementById('businessSeats').value;
 
-   <script src="../public/js/admin.js"></script>
+            // Regular expression to check if flight code follows the format ABC123
+            const flightCodePattern = /^[A-Z]{3}\d{3}$/;
+            if (!flightCodePattern.test(flightCode)) {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Flight code should follow the format of three letters followed by three numbers (e.g., ABC123).',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+                return false;
+            }
+
+            // Check if duration, stops, and seats are numbers
+            if (isNaN(duration) || isNaN(stops) || isNaN(economySeats) || isNaN(businessSeats)) {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Duration, stops, and seats must be numbers.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+                return false;
+            }
+
+            // Check if stops are not more than 5
+            if (stops > 5) {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Stops should not be more than 5.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+                return false;
+            }
+
+            // Check if seats are not more than 20
+            if (economySeats > 20 || businessSeats > 20 || firstSeats > 20) {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Seats should not be more than 20.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+                return false;
+            }
+
+            return true;
+        }
+
+        // Add event listener to the form submission
+        document.getElementById('addFlightForm').addEventListener('submit', function (event) {
+            if (!validateFlightForm()) {
+                event.preventDefault(); // Prevent form submission if validation fails
+            }
+        });
+    });
+</script>
+
 
 </body>
 </html>

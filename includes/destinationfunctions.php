@@ -67,7 +67,7 @@ function getDestinations() {
 
     try {
         // Prepare the SQL query to select destinations
-        $query = "SELECT name FROM Destinations";
+        $query = "SELECT destination_id, name FROM Destinations";
         $result = $conn->query($query);
 
         // Check if the query was successful
@@ -75,7 +75,7 @@ function getDestinations() {
             // Fetch all rows as an associative array
             $destinations = array();
             while ($row = $result->fetch_assoc()) {
-                $destinations[] = $row['name'];
+                $destinations[] = $row;
             }
             return $destinations;
         } else {
@@ -89,3 +89,25 @@ function getDestinations() {
         return array();
     }
 }
+
+
+
+function populateDropdownOptions($conn) {
+    // Query to fetch destinations
+    $destinationsQuery = "SELECT destination_id, name FROM Destinations";
+    $destinationsResult = mysqli_query($conn, $destinationsQuery);
+
+    // Check if query was successful
+    if ($destinationsResult && mysqli_num_rows($destinationsResult) > 0) {
+        // Loop through each row to populate options
+        while ($row = mysqli_fetch_assoc($destinationsResult)) {
+            echo "<option value='" . $row['destination_id'] . "'>" . $row['name'] . "</option>";
+        }
+    } else {
+        echo "<option value=''>No destinations available</option>";
+    }
+}
+
+
+
+

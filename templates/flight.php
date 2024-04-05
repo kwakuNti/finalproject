@@ -18,8 +18,8 @@ checkLogin();
     <link rel="stylesheet" href="/resources/demos/style.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-</head>
 
+</head>
 <body>
     <nav>
         <div class="nav__logo">CliffCo Airways</div>
@@ -58,8 +58,8 @@ checkLogin();
                         <p>To</p>
                         <div class="select">
                             <?php
-                        echo generateDestinationOptions($conn, 'toDestination', 'Select To Destination');
-                        ?>
+                            echo generateDestinationOptions($conn, 'toDestination', 'Select To Destination');
+                            ?>
                         </div>
                     </div>
                     <div class="date-input-container">
@@ -74,13 +74,13 @@ checkLogin();
                     </div>
                     <div class="select">
                         <p>Passengers</p>
-                        <div class="selectBtn" data-type="passengerCount"><i class="fas fa-user"></i>1 Adult, 2 Students</div>
+                        <div class="selectBtn" data-type="passengerCount"><i class="fas fa-user"></i>Passengers</div>
                         <div class="selectDropdown">
-                            <!-- Passengers selection -->
-                            <div class="option" data-type="firstOption"><i class="fas fa-user"></i>First option</div>
-                            <div class="option" data-type="secondOption"><i class="fas fa-user"></i>Second option</div>
-                            <div class="option" data-type="thirdOption"><i class="fas fa-user"></i>Third option</div>
+                            <div class="option" data-type="1"><i class="fas fa-user"></i>1</div>
+                            <div class="option" data-type="2"><i class="fas fa-user"></i>2</div>
+                            <div class="option" data-type="3"><i class="fas fa-user"></i>3</div>
                         </div>
+
                     </div>
 
                     <div class="select">
@@ -98,9 +98,9 @@ checkLogin();
                     <div class="destination">
                         <p>Destination</p>
                         <div class="select">
-                        <?php
-                        echo generateDestinationOptions($conn, 'Destination', 'Select Destination');
-                        ?>
+                            <?php
+                            echo generateDestinationOptions($conn, 'Destination', 'Select Destination');
+                            ?>
 
                         </div>
                     </div>
@@ -116,13 +116,13 @@ checkLogin();
                     </div>
                     <div class="select">
                         <p>Passengers</p>
-                        <div class="selectBtn" data-type="roundTripPassengerCount"><i class="fas fa-user"></i>1 Adult, 2 Students</div>
+                        <div class="selectBtn" data-type="roundTripPassengerCount"><i class="fas fa-user"></i>Passengers</div>
                         <div class="selectDropdown">
-                            <!-- Passengers selection for round trip -->
-                            <div class="option" data-type="firstOption"><i class="fas fa-user"></i>First option</div>
-                            <div class="option" data-type="secondOption"><i class="fas fa-user"></i>Second option</div>
-                            <div class="option" data-type="thirdOption"><i class="fas fa-user"></i>Third option</div>
+                            <div class="option" data-type="1"><i class="fas fa-user"></i>1</div>
+                            <div class="option" data-type="2"><i class="fas fa-user"></i>2</div>
+                            <div class="option" data-type="3"><i class="fas fa-user"></i>3</div>
                         </div>
+
                     </div>
 
                     <div class="select">
@@ -146,14 +146,14 @@ checkLogin();
                         <table>
                             <tr>
                                 <td>From</td>
-                                <td>Thunder Bay</td>
+                                <td id="selectedFromDestination">Thunder Bay</td>
                             </tr>
                             <tr>
                                 <td>To</td>
-                                <td>Longlac</td>
+                                <td id="selectedToDestination">Longlac</td>
                             </tr>
                             <tr>
-                                <td>Transfers</td>
+                                <td>Stops</td>
                                 <td>1</td>
                             </tr>
                             <tr>
@@ -176,7 +176,7 @@ checkLogin();
                             </tr>
 
                             <tr>
-                                <td>Transfers</td>
+                                <td>Stops</td>
                                 <td>1</td>
                             </tr>
                             <tr>
@@ -219,8 +219,48 @@ checkLogin();
 
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
     <script src="../public/js/flight.js"></script>
-</body>
 
+  
+</body>
+<script>
+    $(document).ready(function() {
+    $('#getQuoteButton').click(function() {
+        var fromDestination = $('#selectedFromDestination').text();
+        var toDestination = $('#selectedToDestination').text();
+        var departureDate = $('#departureDate').val();
+        var passengers = $('#passengers').val(); // Assuming the ID for passengers input is "passengers"
+        var travelClass = $('#travelClass').val(); // Assuming the ID for class select is "travelClass"
+
+        // Send AJAX request to server to calculate quote
+        $.ajax({
+            url: 'calculateQuote.php',
+            type: 'POST',
+            data: {
+                from: fromDestination,
+                to: toDestination,
+                departure: departureDate,
+                passengers: passengers,
+                class: travelClass,
+            },
+            success: function(response) {
+                var data = JSON.parse(response);
+                // Update trip details on the right side
+                updateTripDetails(data);
+            }
+        });
+    });
+});
+
+function updateTripDetails(data) {
+    $('#selectedFromDestination').text(data.from);
+    $('#selectedToDestination').text(data.to);
+    $('#passengerCount').text(data.passengers);
+    $('#selectedClass').text(data.class);
+    $('#basePrice').text(data.basePrice);
+    $('#tax').text(data.tax);
+    $('#totalPrice').text(data.totalPrice);
+}
+
+</script>
 </html>

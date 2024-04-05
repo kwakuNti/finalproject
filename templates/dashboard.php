@@ -46,7 +46,9 @@ if (!hasProfilePicture($_SESSION['user_id'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.4.0/fonts/remixicon.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins&display=swap">
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <!-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
     <link rel="stylesheet" href="../public/css/dashboard.css" />
     <title>Take Flight</title>
@@ -110,55 +112,160 @@ if (!hasProfilePicture($_SESSION['user_id'])) {
         <button class="btn" id="logoutButton">Log out</button>
     </nav>
     <header class="section__container header__container">
-        <?php
-        include '../templates/time.php'
-        ?>
-        <h1 class="section__header">Welcome, <?php echo getUserFullName($_SESSION['user_id']); ?></h1>
-        <img src="../assets/images/asset1.jpg" alt="header" />
+    <h1 class="section__header">
+            <?php
+            // Get the current hour of the day
+            $currentHour = date('G');
+
+            // Define greeting based on the time of day
+            if ($currentHour >= 5 && $currentHour < 12) {
+                echo 'Good morning, ';
+            } elseif ($currentHour >= 12 && $currentHour < 18) {
+                echo 'Good afternoon, ';
+            } else {
+                echo 'Good evening, ';
+            }
+
+            // Output the user's full name
+            echo getUserFullName($_SESSION['user_id']);
+            ?>
+        </h1>        <img src="../assets/images/asset1.jpg" alt="header" />
     </header>
     <section id="find-flight" class="section__container booking__container">
     <h2 class="section__header">Find Your Flight</h2>
     <form class="booking__form">
-        <div class="form__group">
-            <div class="input__icon"><i class="ri-airplane-takeoff-line"></i></div>
-            <select name="departure" id="departure">
+    <div class="form__group">
+        <div class="input__icon"><i class="ri-airplane-takeoff-line"></i></div>
+        <select name="departure" id="departure">
+            <option value="">Select departure</option>
             <?php
+            $destinations = getDestinations();
 
-        $destinations = getDestinations();
-
-        if (!empty($destinations)) {
-            // Iterate over the destinations to generate options
-            foreach ($destinations as $destination) {
-                echo "<option value=\"$destination\">$destination</option>";
+            if (!empty($destinations)) {
+                foreach ($destinations as $destination) {
+                    // Assuming each $destination is an associative array with 'destination_id' and 'name' keys
+                    echo "<option value=\"{$destination['destination_id']}\">{$destination['name']}</option>";
+                }
+            } else {
+                echo "<option value=\"\">No destinations available</option>";
             }
-        } else {
-            echo "<option value=\"\">No destinations available</option>";
-        }
-        ?>
-            </select>
-        </div>
-        <div class="form__group">
-            <div class="input__icon"><i class="ri-airplane-landing-line"></i></div>
-            <select name="arrival" id="arrival">
+            ?>
+        </select>
+    </div>
+    <div class="form__group">
+        <div class="input__icon"><i class="ri-airplane-landing-line"></i></div>
+        <select name="destination" id="destination">
+            <option value="">Select destination</option>
             <?php
-        if (!empty($destinations)) {
-            foreach ($destinations as $destination) {
-                echo "<option value=\"$destination\">$destination</option>";
+            if (!empty($destinations)) {
+                foreach ($destinations as $destination) {
+                    // Assuming each $destination is an associative array with 'destination_id' and 'name' keys
+                    echo "<option value=\"{$destination['destination_id']}\">{$destination['name']}</option>";
+                }
+            } else {
+                echo "<option value=\"\">No destinations available</option>";
             }
-        } else {
-            echo "<option value=\"\">No destinations available</option>";
-        }
-        ?>
-            </select>
-        </div>
-        <div class="form__group">
-            <div class="input__icon"><i class="ri-ticket-line"></i></div>
-            <input type="text" placeholder="Booking code (optional)">
-        </div>
-        <button type="submit" class="btn">Search</button>
-    </form>
+            ?>
+        </select>
+    </div>
+    <div class="form__group">
+        <div class="input__icon"><i class="ri-ticket-line"></i></div>
+        <input type="text" placeholder="Booking code (optional)" name="bookingCode" id="bookingCode">
+    </div>
+    <button type="submit" class="btn" id="searchButton">Search</button>
+</form>
+
 </section>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('searchButton').addEventListener('click', function (event) {
+            event.preventDefault(); // Prevent the form from submitting
 
+            // Get form data
+            var bookingCode = document.getElementById('bookingCode').value;
+            var departure = document.getElementById('departure').value;
+            var destination = document.getElementById('destination').value;
+
+            // Create an XMLHttpRequest object
+            var xhr = new XMLHttpRequest();
+
+            // Configure the request
+            xhr.open('POST', '../actions/search.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+            // Define the callback function
+            xhr.onload = function () {
+                if (xhr.status >= 200 && xhr.status < 400) {
+                    // Parse the JSON response
+                    var response = JSON.parse(xhr.responseText);
+
+                    // Check if the search was successful
+                    if (response.success) {
+                        // Check if there are any flights
+                        if (response.flights.length > 0) {
+                            // Construct the flight details table
+                            var flightDetailsTable = '<table class="flight-details-table">';
+                            flightDetailsTable += '<thead><tr><th>Flight Code</th><th>Departure</th><th>Destination</th><th>Departure Time</th><th>Arrival Time</th><th>Book</th></tr></thead><tbody>';
+
+                            for (var i = 0; i < response.flights.length; i++) {
+                                var flight = response.flights[i];
+                                flightDetailsTable += '<tr>';
+                                flightDetailsTable += '<td>' + flight.flight_code + '</td>';
+                                flightDetailsTable += '<td>' + flight.origin_destination_name + '</td>';
+                                flightDetailsTable += '<td>' + flight.destination_destination_name + '</td>';
+                                flightDetailsTable += '<td>' + flight.departure_datetime + '</td>';
+                                flightDetailsTable += '<td>' + flight.arrival_datetime + '</td>';
+                                flightDetailsTable += '<td><button class="book-flight-btn" data-flight-id="' + flight.id + '">Book Flight</button></td>';
+                                flightDetailsTable += '</tr>';
+                            }
+
+                            flightDetailsTable += '</tbody></table>';
+
+                            // Display SweetAlert pop-up with the flight details table
+                            Swal.fire({
+                                title: 'Flight Details',
+                                html: flightDetailsTable,
+                                icon: 'info',
+                                showCancelButton: true,
+                                confirmButtonText: 'Proceed to Booking',
+                                cancelButtonText: 'Cancel',
+                                showLoaderOnConfirm: true,
+                                customClass: {
+                                    popup: 'custom-popup-class', // Add custom class to control pop-up width
+                                },
+                                preConfirm: () => {
+                                    // Handle the "Book Flight" button clicks
+                                    var bookFlightButtons = document.querySelectorAll('.book-flight-btn');
+                                    bookFlightButtons.forEach(function (button) {
+                                        button.addEventListener('click', function () {
+                                            var flightId = this.dataset.flightId;
+                                            // Redirect to the flight booking page with the selected flight ID
+                                            window.location.href = '../templates/flight.php?flight_id=' + flightId;
+                                        });
+                                    });
+                                }
+                            });
+                        } else {
+                            // Display error message if no flights were found
+                            Swal.fire('No Flights Found', response.message, 'error');
+                        }
+                    } else {
+                        // Display error message if there was a server error
+                        Swal.fire('Error', response.message, 'error');
+                    }
+                } else {
+                    // Display error message if there was a server error
+                    Swal.fire('Error', 'An error occurred while processing your request.', 'error');
+                }
+            };
+
+            // Send the request with form data
+            xhr.send('bookingCode=' + bookingCode + '&departure=' + departure + '&destination=' + destination);
+        });
+    });
+
+   
+</script>
 
 
     <section class="section__container plan__container">
@@ -364,7 +471,15 @@ if (!hasProfilePicture($_SESSION['user_id'])) {
         </div>
     </footer>
     </style>
-    
+    <script>
+document.addEventListener('DOMContentLoaded', function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    const message = urlParams.get('msg');
+    if (message) {
+        swal("Notice", message, "info");
+    }
+});
+</script>
 
     
 <script src="../public/js/dashboard.js"></script>
@@ -374,3 +489,6 @@ if (!hasProfilePicture($_SESSION['user_id'])) {
 </body>
 
 </html>
+
+
+

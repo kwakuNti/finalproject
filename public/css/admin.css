@@ -1,115 +1,171 @@
+/* Updated CSS */
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .container {
-    width: 1400px;
-    height: 650px;
+    width: 70%;
+    height: 600px;
+    max-width: 1500px;
+    margin: 0 auto;
 }
-/* .modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 9999;
-} */
-.app-color-blue-1 {
-    color: #346EE1;
-}
-
-.app-color-blue-3 {
-    color: #A0B4D6;
-}
-
-.app-color-black {
-    color: #3E4350;
-}
-
-.app-color-gray-1 {
-    color: #949AA7;
-}
-
-.app-color-red {
-    color: #949AA7;
-}
-
-.app-bg-blue-1 {
-    background: #346EE1;
-}
-
-.app-bg-blue-2{
-    background: #F5F9FC;
-}
-
-.app-button-shadow {
-    box-shadow: 0px 5px 10px 0px rgb(145 167 210 / 25%);
-}
-
-
-.app-bg-blue-3 {
-    background: #4A7AE5;
-}
-
-.app-bg-blue-4 {
-    background: #518AEA;
-}
-
-.app-bg-white-1 {
-    background: #F4F8F9;
-}
-
-.app-color-yellow-1 {
-    color: #D7AC67;
-}
-
-.app-bg-yellow-2 {
-    background: #FFF9EB;
-}
-
-.app-bg-yellow-3 {
-    background: #FFBE4E;
-}
-
-.app-border-1 {
-    border: 1px solid #F4F6F9;
-}
-
-.app-color-red-1 {
-    color: #E0899C;
-}
-
-.app-bg-red-2 {
-    background: #FEF5F6;
-}
-
-.app-color-green {
-    color: #0CBDA8;
-}
-
-.active {
-    position: relative;
-    box-shadow: 6px -6px 11px 0 rgb(0 0 0 / 8%);
-}
-
-.active::before {
-    position: absolute;
-    content: '';
-    width: 4px;
-    height: 55%;
-    background-color: #346EE1;
-    top: 20px;
-    left: 0;
-}
-
 
 .modal {
     display: none;
     position: fixed;
-    top: 70%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-
-    background-color: rgba(0, 0, 0, 0.5);
     z-index: 9999;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    height: 500px;
+    max-width: 600px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    overflow-y: auto;
+}
 
+.modal-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -10px;
+}
 
+.modal-col {
+    flex: 0 0 50%;
+    max-width: 50%;
+    padding: 10px;
+}
+
+.modal-col input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+
+    .modal {
+        width: 90%;
+    }
+
+    .modal-col {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+.swal2-container {
+    z-index: 10000 !important;
+}
+
+.app-color-blue-1 {
+    color: #346ee1;
+}
+
+.app-color-blue-3 {
+    color: #a0b4d6;
+}
+
+.app-color-black {
+    color: #3e4350;
+}
+
+.app-color-gray-1 {
+    color: #949aa7;
+}
+
+.app-color-red {
+    color: #949aa7;
+}
+
+.app-bg-blue-1 {
+    background: #346ee1;
+}
+
+.app-bg-blue-2 {
+    background: #f5f9fc;
+}
+
+.app-button-shadow {
+    box-shadow: 0px 5px 10px 0px rgba(145, 167, 210, 0.25);
+}
+
+.app-bg-blue-3 {
+    background: #4a7ae5;
+}
+
+.app-bg-blue-4 {
+    background: #518aea;
+}
+
+.app-bg-white-1 {
+    background: #f4f8f9;
+}
+
+.app-color-yellow-1 {
+    color: #d7ac67;
+}
+
+.app-bg-yellow-2 {
+    background: #fff9eb;
+}
+
+.app-bg-yellow-3 {
+    background: #ffbe4e;
+}
+
+.app-border-1 {
+    border: 1px solid #f4f6f9;
+}
+
+.app-color-red-1 {
+    color: #e0899c;
+}
+
+.app-bg-red-2 {
+    background: #fef5f6;
+}
+
+.app-color-green {
+    color: #0cbda8;
+}
+
+.active {
+    background-color: #fff !important; /* Active button background color */
+    color: #346ee1 !important; /* Active button text color */
+}
+
+#flightsBtn.active::before,
+#usersBtn.active::before,
+#destinationsBtn.active::before {
+    position: absolute;
+    content: '';
+    width: 4px;
+    height: 55%;
+    background-color: #346ee1;
+    top: 20px;
+    left: 0;
+}
+
+#flightsBtn.active::before {
+    background-color: #518aea;
+}
+
+#usersBtn.active::before {
+    background-color: #4a7ae5;
+}
+
+#destinationsBtn.active::before {
+    background-color: #346ee1;
 }
