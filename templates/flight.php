@@ -48,9 +48,9 @@ checkLogin();
                 <form id="oneWayForm" style="display: block;">
                     <div class="destination">
                         <p>From</p>
-                        <div class="select">
+                        <div class="select" >
                             <?php
-                            echo generateDestinationOptions($conn, 'fromDestination', 'Select From Destination');
+                            echo generateDestinationOptionsx($conn, 'fromDestination', 'Select From Destination');
                             ?>
                         </div>
                     </div>
@@ -146,23 +146,20 @@ checkLogin();
                         <table>
                             <tr>
                                 <td>From</td>
-                                <td id="selectedFromDestination">Thunder Bay</td>
+                                <td><span id="quoteFrom"></span></td>
                             </tr>
                             <tr>
                                 <td>To</td>
-                                <td id="selectedToDestination">Longlac</td>
+                                <td><span id="quoteTo"></span></td>
                             </tr>
-                            <tr>
-                                <td>Stops</td>
-                                <td>1</td>
-                            </tr>
+
                             <tr>
                                 <td>Departure</td>
-                                <td>2021-08-28 18:00:00 ET</td>
+                                <td><span id="quoteDeparture"></span></td>
                             </tr>
                             <tr>
                                 <td>Arrival</td>
-                                <td>2021-08-28 17:00:00 ET</td>
+                                <td><span id="quoteArrival"></span></td>
                             </tr>
                         </table>
                     </div>
@@ -172,16 +169,13 @@ checkLogin();
                         <table>
                             <tr>
                                 <td>Destination</td>
-                                <td>Thunder Bay</td>
+                                <td><span id="destination"></span></td>
                             </tr>
 
-                            <tr>
-                                <td>Stops</td>
-                                <td>1</td>
-                            </tr>
+                        
                             <tr>
                                 <td>Departure</td>
-                                <td>2021-08-28 18:00:00 ET</td>
+                                <td><span id="quoteDeparture"></span></td>
                             </tr>
                             <tr>
                                 <td>Arrival</td>
@@ -212,8 +206,8 @@ checkLogin();
         </div>
         <div class="buttons">
 
-            <button type="submit" form="oneWayForm">Get Quote</button>
-            <button type="submit" form="roundTripForm">Book Tickets</button>
+            <button type="submit" class="get-quotes-btn">Get Quote</button>
+            <button type="submit" form="roundTripForm" class="book-flights-btn">Book Tickets</button>
         </div>
     </div>
 
@@ -223,44 +217,5 @@ checkLogin();
 
   
 </body>
-<script>
-    $(document).ready(function() {
-    $('#getQuoteButton').click(function() {
-        var fromDestination = $('#selectedFromDestination').text();
-        var toDestination = $('#selectedToDestination').text();
-        var departureDate = $('#departureDate').val();
-        var passengers = $('#passengers').val(); // Assuming the ID for passengers input is "passengers"
-        var travelClass = $('#travelClass').val(); // Assuming the ID for class select is "travelClass"
 
-        // Send AJAX request to server to calculate quote
-        $.ajax({
-            url: 'calculateQuote.php',
-            type: 'POST',
-            data: {
-                from: fromDestination,
-                to: toDestination,
-                departure: departureDate,
-                passengers: passengers,
-                class: travelClass,
-            },
-            success: function(response) {
-                var data = JSON.parse(response);
-                // Update trip details on the right side
-                updateTripDetails(data);
-            }
-        });
-    });
-});
-
-function updateTripDetails(data) {
-    $('#selectedFromDestination').text(data.from);
-    $('#selectedToDestination').text(data.to);
-    $('#passengerCount').text(data.passengers);
-    $('#selectedClass').text(data.class);
-    $('#basePrice').text(data.basePrice);
-    $('#tax').text(data.tax);
-    $('#totalPrice').text(data.totalPrice);
-}
-
-</script>
 </html>

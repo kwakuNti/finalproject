@@ -45,13 +45,13 @@ function generateDestinationOptions($conn, $selectName, $defaultText)
     // Check if query was successful
     if ($result) {
         // Initialize an empty string to store the options
-        $options = '<div class="select">
-                        <div class="selectBtn" data-type="firstOption"><i class="fas fa-map-marker-alt"></i>' . $defaultText . '</div>
+        $options = '<div class="select" >
+                        <div class="selectBtn" data-type="firstOption" id="toDestination"><i class="fas fa-map-marker-alt"></i>' . $defaultText . '</div>
                         <div class="selectDropdown">';
         // Loop through each row in the result set
         while ($row = mysqli_fetch_assoc($result)) {
             // Append an option tag for each destination
-            $options .= '<div class="option" data-type="' . $row['destination_id'] . '"><i class="fas fa-map-marker-alt"></i>' . $row['name'] . '</div>';
+            $options .= '<div class="option" data-type="' . $row['destination_id'] . '" data-name="' . $row['name'] . '"><i class="fas fa-map-marker-alt"></i>' . $row['name'] . '</div>';
         }
         // Close the selectDropdown div and return the generated options
         $options .= '</div></div>';
@@ -61,6 +61,38 @@ function generateDestinationOptions($conn, $selectName, $defaultText)
         return '';
     }
 }
+
+
+function generateDestinationOptionsx($conn, $selectName, $defaultText)
+{
+    // Fetch destinations from the database
+    $sql = "SELECT destination_id, name FROM Destinations";
+    $result = mysqli_query($conn, $sql);
+
+    // Check if query was successful
+    if ($result) {
+        // Initialize an empty string to store the options
+        $options = '<div class="select" >
+                        <div class="selectBtn" data-type="firstOption" id="fromDestination"><i class="fas fa-map-marker-alt"></i>' . $defaultText . '</div>
+                        <div class="selectDropdown">';
+        // Loop through each row in the result set
+        while ($row = mysqli_fetch_assoc($result)) {
+            // Append an option tag for each destination
+            $options .= '<div class="option" data-type="' . $row['destination_id'] . '" data-name="' . $row['name'] . '"><i class="fas fa-map-marker-alt"></i>' . $row['name'] . '</div>';
+        }
+        // Close the selectDropdown div and return the generated options
+        $options .= '</div></div>';
+        return $options;
+    } else {
+        // Return an empty string if query fails
+        return '';
+    }
+}
+
+
+
+
+
 
 function getDestinations() {
     global $conn; // Assuming $conn is your MySQLi database connection
