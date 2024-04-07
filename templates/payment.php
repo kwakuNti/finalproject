@@ -1,6 +1,11 @@
 <?php
 include '../config/core.php';
-include '../config/connection.php'; 
+include '../config/connection.php';
+if ($_SESSION['role_id'] !== '2') {
+  // Redirect the user to the dashboard.php
+  header("Location: ../templates/dashboard.php");
+  exit;
+}
 ?>
 <!doctype html>
 <html lang="en">

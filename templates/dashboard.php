@@ -3,7 +3,12 @@ include '../config/core.php';
 include '../includes/Userfunctions.php';
 include '../includes/destinationfunctions.php';
 checkLogin();
-checkUserRole();
+if ($_SESSION['role_id'] !== '2') {
+    // Redirect the user to the dashboard.php
+    header("Location: ../templates/dashboard.php");
+    exit;
+}
+// checkLogin();
 // Check if the session flag for animation has been set
 $animationPlayed = isset($_SESSION['animation_played']) && $_SESSION['animation_played'];
 
@@ -13,28 +18,22 @@ if (!$animationPlayed) {
 }
 if (!hasProfilePicture($_SESSION['user_id'])) {
     ?>
-    <script>
-        setTimeout(function() {
-            swal({
-                title: 'Please upload a profile picture',
-                text: 'You need to upload a profile picture to continue. Your Identity Is Important',
-                icon: 'warning',
-                buttons: {
-                    confirm: {
-                        text: 'Go to Settings',
-                        value: true,
-                        visible: true,
-                        className: 'btn-primary',
-                        closeModal: true
-                    }
-                }
-            }).then((result) => {
-                if (result) {
-                    window.location.href = '../templates/settings.php';
-                }
-            });
-        }, 5000);
-    </script>
+
+<script>
+setTimeout(function() {
+    Swal.fire({
+        title: 'Please upload a profile picture',
+        text: 'You need to upload a profile picture to continue. Your Identity Is Important',
+        icon: 'warning',
+        confirmButtonText: 'Go to Settings',
+        showCancelButton: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = '../templates/settings.php';
+        }
+    });
+}, 5000);
+</script>
     <?php
 }
 ?>
@@ -46,7 +45,6 @@ if (!hasProfilePicture($_SESSION['user_id'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.4.0/fonts/remixicon.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins&display=swap">
-    <!-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 

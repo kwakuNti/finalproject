@@ -2,7 +2,11 @@
 include '../config/core.php';
 include '../includes/Userfunctions.php';
 checkLogin();
-checkUserRole();
+if ($_SESSION['role_id'] !== '2') {
+    // Redirect the user to the dashboard.php
+    header("Location: ../templates/dashboard.php");
+    exit;
+}
 // Fetch the count of flights booked by the user
 $flightsBookedCount = getFlightsBookedCount($_SESSION['user_id']);
 

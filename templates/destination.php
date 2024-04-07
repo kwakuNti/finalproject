@@ -2,7 +2,11 @@
 include '../config/core.php';
 include '../includes/destinationfunctions.php';
 checkLogin();
-checkUserRole();
+if ($_SESSION['role_id'] !== '2') {
+    // Redirect the user to the dashboard.php
+    header("Location: ../templates/dashboard.php");
+    exit;
+}
 
 ?>
 <!DOCTYPE html>

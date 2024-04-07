@@ -41,16 +41,27 @@ function getUserCountry($userid)
 }
 
 function hasProfilePicture($userId) {
-
     global $conn;
+    
+    // Prepare SQL query
     $sql = "SELECT profile_picture FROM Users WHERE user_id = ?";
     $stmt = $conn->prepare($sql);
+    
+    // Bind parameters and execute query
     $stmt->bind_param("i", $userId);
     $stmt->execute();
+    
+    // Get result and check if a profile picture exists
     $result = $stmt->get_result();
-    $row = $result->fetch_assoc();
-    return !empty($row['profile_picture']);
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        return !empty($row['profile_picture']);
+    } else {
+        // Handle case where no result is found
+        return false;
+    }
 }
+
 
 
 function getUserEmail($user_id) {

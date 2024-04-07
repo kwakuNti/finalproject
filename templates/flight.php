@@ -2,7 +2,11 @@
 include '../config/core.php';
 include '../includes/destinationfunctions.php';
 checkLogin();
-checkUserRole();
+if ($_SESSION['role_id'] !== '2') {
+    // Redirect the user to the dashboard.php
+    header("Location: ../templates/dashboard.php");
+    exit;
+}
 
 ?>
 <!DOCTYPE html>
@@ -18,7 +22,8 @@ checkUserRole();
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
 
 </head>
@@ -27,7 +32,7 @@ checkUserRole();
             const urlParams = new URLSearchParams(window.location.search);
             const message = urlParams.get('msg');
             if (message) {
-                swal("Notice", message, "info");
+                Swal.fire("Notice", message, "info");
             }
         });
     </script>
@@ -181,6 +186,8 @@ checkUserRole();
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="../public/js/flight.js"></script>
     <script>
+
+  
   // Get the button element
   const goBackBtn = document.getElementById('goBackBtn');
 
