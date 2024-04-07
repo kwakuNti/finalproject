@@ -4,6 +4,7 @@ include '../includes/Userfunctions.php';
 include '../includes/destinationfunctions.php';
 include '../includes/adminfunctions.php';
 checkLogin();
+checkUserRole();
 ?>
 <!DOCTYPE html>
 <html lang="en">

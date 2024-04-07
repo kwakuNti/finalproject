@@ -4,14 +4,13 @@ include '../config/connection.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Get the POST parameters
-    $fromDestination = $_POST['from'];
     $toDestination = $_POST['to'];
     $selectedClass = $_POST['class'];
 
     // Fetch destination names
-    $query = "SELECT destination_id, name FROM Destinations WHERE destination_id IN (?, ?)";
+    $query = "SELECT destination_id, name FROM Destinations WHERE destination_id IN (?)";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param("ii", $fromDestination, $toDestination);
+    $stmt->bind_param("i",  $toDestination);
     $stmt->execute();
     $result = $stmt->get_result();
 
@@ -21,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Ensure both destinations are found
-    if (!isset($destinationNames[$fromDestination]) || !isset($destinationNames[$toDestination])) {
+    if (!isset($destinationNames[$toDestination])) {
         http_response_code(404);
         echo json_encode(["message" => "One or both destinations not found."]);
         exit;
@@ -42,7 +41,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Construct response
         $response = [
-            'from_destination_name' => $destinationNames[$fromDestination],
             'to_destination_name' => $destinationNames[$toDestination],
             'base_price' => $base_price,
             'tax' => $tax,

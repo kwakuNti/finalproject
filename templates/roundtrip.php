@@ -77,12 +77,12 @@ checkUserRole();
                     <div class="date-input-container">
                         <p>Departure Date</p>
                         <i class="fas fa-calendar-alt date-icon"></i>
-                        <input type="date" class="date-input-field" type="text" id="roundTripDepartureDate" name="departureDate" placeholder="mm/dd/yyyy">
+                        <input type="date" class="date-input-field" type="text" id="departureDate" name="departureDate" placeholder="mm/dd/yyyy">
                     </div>
                     <div class="date-input-container">
                         <p>Arrival Date</p>
                         <i class="fas fa-calendar-alt date-icon"></i>
-                        <input type="date" class="date-input-field" type="text" id="roundTripArrivalDate" name="arrivalDate" placeholder="mm/dd/yyyy">
+                        <input type="date" class="date-input-field" type="text" id="arrivalDate" name="arrivalDate" placeholder="mm/dd/yyyy">
                     </div>
                     <div class="select">
                         <p>Passengers</p>
@@ -168,7 +168,7 @@ checkUserRole();
 
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="../public/js/flight.js"></script>
+    <script src="../public/js/flightx.js"></script>
 
     <script>
   // Get the button element

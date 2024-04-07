@@ -115,7 +115,7 @@ checkUserRole();
                             <div class="option" data-type="economy">Economy</div>
                             <div class="option" data-type="first">First Class</div>
                         </div>
-                        <input type="hidden" name="classSelection" id="classSelection" value="Business"> <!-- Hidden input for class selection -->
+                        <input type="hidden" name="classSelection" id="classSelection" value="Business"> 
 
                     </div>
                 </form>
