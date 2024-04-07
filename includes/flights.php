@@ -11,15 +11,15 @@ function findFlightByFlightCode($flightCode) {
     global $conn;
 
     // Prepare the SQL statement to select specific fields from the Flights table
-    $sql = "SELECT Flights.flight_code, 
-                   Origins.name AS origin_destination_name, 
-                   Destinations.name AS destination_destination_name, 
-                   Flights.departure_datetime, 
+    $sql = "SELECT Flights.flight_code,
+                   Origins.name AS origin_destination_name,
+                   Destinations.name AS destination_destination_name,
+                   Flights.departure_datetime,
                    Flights.arrival_datetime
             FROM Flights
-            INNER JOIN Destinations AS Origins 
+            INNER JOIN Destinations AS Origins
             ON Flights.origin_destination_id = Origins.destination_id
-            INNER JOIN Destinations 
+            INNER JOIN Destinations
             ON Flights.destination_destination_id = Destinations.destination_id
             WHERE Flights.flight_code = ?";
 
@@ -120,3 +120,7 @@ function findFlightsByLocations($departure, $destination) {
     // Return the search results
     return $searchResults;
 }
+
+
+
+

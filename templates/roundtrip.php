@@ -54,31 +54,21 @@ checkUserRole();
         <div class="blocks">
             <div class="left">
             <div class="triptype">
-    <button type="button"  class="one-way-button active">One-Way</button>
-    <button type="button"  class="one-way-button" onclick="redirectToRoundTrip()">Round-Trip</button>
+    <button type="button" id="oneWayButton" class="one-way-button " onclick="redirectToOneWay()">One-Way</button>
+    <button type="button" id="roundTripButton" class="one-way-button active" >Round-Trip</button>
 </div>
 <script>
-    function redirectToRoundTrip() {
-        window.location.href = "../templates/roundtrip.php";
+    function redirectToOneWay() {
+        window.location.href = "../templates/flight.php";
     }
 </script>
+                
 
-                <form id="oneway"  method="post" action="../actions/book_flight.php">
+                <form id="roundTrip"   method="post" action="../actions/round_trip.php" >
                     <div class="destination">
-                        <p>From</p>
+                        <p>Destination</p>
                         <div class="select">
-
-                            <?php
-                            echo generateDestinationOptionsx($conn, 'fromDestination', 'Select From Destination');
-                            ?>
-                        </div>
-
-                    </div>
-                    <div class="destination">
-                        <p>To</p>
-                        <div class="select">
-
-                            <?php
+                        <?php
                             echo generateDestinationOptions($conn, 'toDestination', 'Select To Destination');
                             ?>
 
@@ -87,23 +77,22 @@ checkUserRole();
                     <div class="date-input-container">
                         <p>Departure Date</p>
                         <i class="fas fa-calendar-alt date-icon"></i>
-                        <input type="date" class="date-input-field" type="text" id="departureDate" name="departureDate" placeholder="mm/dd/yyyy">
+                        <input type="date" class="date-input-field" type="text" id="roundTripDepartureDate" name="departureDate" placeholder="mm/dd/yyyy">
                     </div>
                     <div class="date-input-container">
                         <p>Arrival Date</p>
                         <i class="fas fa-calendar-alt date-icon"></i>
-                        <input type="date" class="date-input-field" type="text" id="arrivalDate" name="arrivalDate" placeholder="mm/dd/yyyy">
+                        <input type="date" class="date-input-field" type="text" id="roundTripArrivalDate" name="arrivalDate" placeholder="mm/dd/yyyy">
                     </div>
                     <div class="select">
                         <p>Passengers</p>
-                        <div class="selectBtn" data-type="passengerCount"><i class="fas fa-user"></i>Passengers</div>
+                        <div class="selectBtn" data-type="roundTripPassengerCount"><i class="fas fa-user"></i>Passengers</div>
                         <div class="selectDropdown">
                             <div class="option" data-type="1"><i class="fas fa-user"></i>1</div>
                             <div class="option" data-type="2"><i class="fas fa-user"></i>2</div>
                             <div class="option" data-type="3"><i class="fas fa-user"></i>3</div>
                         </div>
                         <input type="hidden" name="passengers" id="passengers" value="1"> <!-- Hidden input for passengers -->
-
 
                     </div>
 
@@ -118,24 +107,26 @@ checkUserRole();
                         <input type="hidden" name="classSelection" id="classSelection" value="Business"> <!-- Hidden input for class selection -->
 
                     </div>
-                </form>
 
+
+
+
+
+                </form>
             </div>
 
             <div class="right">
                 <div class="trip-detail-container">
                     <!-- Trip details container -->
-                    <div id="oneWayTripDetails" style="display: block;">
-                        <h3 class="trip-detail-title">One-Way</h3>
+                   
+                    <div id="roundTripDetails" >
+                        <h3 class="trip-detail-title">Round-Trip</h3>
                         <table>
                             <tr>
-                                <td>From</td>
-                                <td><span id="quoteFrom"></span></td>
-                            </tr>
-                            <tr>
-                                <td>To</td>
+                                <td>Destination</td>
                                 <td><span id="quoteTo"></span></td>
                             </tr>
+
 
                             <tr>
                                 <td>Departure</td>
@@ -147,8 +138,6 @@ checkUserRole();
                             </tr>
                         </table>
                     </div>
-
-                  
                     <hr>
                     <div class="price-container">
                         <h3 class="trip-detail-title">Price</h3>
@@ -173,13 +162,14 @@ checkUserRole();
         <div class="buttons">
 
             <button type="submit" class="get-quotes-btn">Get Quote</button>
-            <button type="submit" form="oneway"  class="book-flights-btn">Book Tickets</inpu>
+            <button type="submit" form="roundTrip" class="book-flights-btn">Book Tickets</button>
         </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="../public/js/flight.js"></script>
+
     <script>
   // Get the button element
   const goBackBtn = document.getElementById('goBackBtn');
@@ -190,7 +180,6 @@ checkUserRole();
     window.location.href = '../templates/dashboard.php';
   });
 </script>
-
    
 </body>
 

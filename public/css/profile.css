@@ -196,3 +196,30 @@ a {
     margin-top: 0;
   }
 }
+
+
+ textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 10px;
+  resize: vertical;
+  border: none;
+  outline: none;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  max-width: 100%;
+}
+
+/* Style for the save button */
+button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}

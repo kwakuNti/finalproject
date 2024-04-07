@@ -2,7 +2,7 @@
 include '../config/core.php';
 include '../includes/destinationfunctions.php';
 checkLogin();
-
+checkUserRole();
 
 ?>
 <!DOCTYPE html>

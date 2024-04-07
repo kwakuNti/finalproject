@@ -2,6 +2,13 @@
 include '../config/core.php';
 include '../includes/Userfunctions.php';
 checkLogin();
+checkUserRole();
+// Fetch the count of flights booked by the user
+$flightsBookedCount = getFlightsBookedCount($_SESSION['user_id']);
+
+// Fetch the count of flights taken by the user
+$flightsTakenCount = getFlightsTakenCount($_SESSION['user_id']);
+$userImages = getUserFlightImages($_SESSION['user_id']);
 
 ?>
 <!DOCTYPE html>
@@ -32,16 +39,18 @@ checkLogin();
                 <p><?php echo  getUserCountry($_SESSION['user_id']); ?></p>
 
                 <ul class="about">
-                    <li><span>4,073</span>Flights</li>
-                    <li><span>322</span>Following</li>
-                    <li><span>200,543</span>Attraction</li>
+                <li><span><?php echo $flightsBookedCount; ?></span>Flights</li>
+                    <li><span><?php echo $flightsTakenCount; ?></span>Flights Taken</li>
+                    <!-- Replace 'Following' with 'Flights Taken' -->
+                    <li><span>0</span>Friends and Family</li>
                 </ul>
 
                 <div class="content">
                     <p>
-                        Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aliquam
-                        erat volutpat. Morbi imperdiet, mauris ac auctor dictum, nisl
-                        ligula egestas nulla.
+                    <div class="content">
+    <textarea id="aboutTextarea" rows="5" cols="40" placeholder="Enter your interests or about"></textarea><br>
+    <button onclick="saveAbout()">Save</button>
+</div>
                     </p>
 
                     <ul>
@@ -68,16 +77,38 @@ checkLogin();
                 </nav>
 
                 <div class="photos">
-                    <img src="img/img_1.avif" alt="Photo" />
-                    <img src="img/img_2.avif" alt="Photo" />
-                    <img src="img/img_3.avif" alt="Photo" />
-                    <img src="img/img_4.avif" alt="Photo" />
-                    <img src="img/img_5.avif" alt="Photo" />
-                    <img src="img/img_6.avif" alt="Photo" />
+                    <?php if (!empty($userImages)): ?>
+                        <?php foreach($userImages as $image): ?>
+                            <img src="<?php echo $image; ?>" alt="Photo" />
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <p>No photos available.</p>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
     </div>
 </body>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+    // Function to save about information to localStorage
+    function saveAbout() {
+        var about = document.getElementById('aboutTextarea').value;
+        localStorage.setItem('userAbout', about);
+        swal("About information saved!", {
+            icon: "success",
+        });
+    }
 
+    // Function to check if about information exists in localStorage and populate the textarea
+    function loadAbout() {
+        var storedAbout = localStorage.getItem('userAbout');
+        if (storedAbout) {
+            document.getElementById('aboutTextarea').value = storedAbout;
+        }
+    }
+
+    // Load about information when the page is loaded
+    window.onload = loadAbout;
+</script>
 </html>

@@ -22,14 +22,14 @@ checkLogin();
 <nav>
         <div class="nav__logo">CliffCo Airways</div>
         <ul class="nav__links">
-            <li class="link"><a href="../templates/calender.php">Your Schedule</a></li>
+            <li class="link"><a href="../templates/myflights.php">Your Schedule</a></li>
             <li class="link"><a href="../templates/profile.php">Profile</a>
               
             </li>
 
             <li class="link"><a href="../templates/destination.php">Destinations</a></li>
         </ul>
-        <button class="btn">Go back</button>
+        <button class="btn" id="goBackBtn">Go back</button>
     </nav>
     <div class="container light-style flex-grow-1 container-p-y">
         <form action="../actions/updateprofile.php" method="post" enctype="multipart/form-data" >
@@ -295,6 +295,16 @@ document.addEventListener('DOMContentLoaded', function () {
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../public/js/settings.js"></script>
+    <script>
+  // Get the button element
+  const goBackBtn = document.getElementById('goBackBtn');
+
+  // Add click event listener
+  goBackBtn.addEventListener('click', function() {
+    // Redirect to the dashboard page
+    window.location.href = '../templates/dashboard.php';
+  });
+</script>
 </body>
 
 </html>

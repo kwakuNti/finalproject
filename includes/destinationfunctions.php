@@ -45,22 +45,25 @@ function generateDestinationOptions($conn, $selectName, $defaultText)
     // Check if query was successful
     if ($result) {
         // Initialize an empty string to store the options
-        $options = '<div class="select" >
-                        <div class="selectBtn" data-type="firstOption" id="toDestination"><i class="fas fa-map-marker-alt"></i>' . $defaultText . '</div>
-                        <div class="selectDropdown">';
+        $options = '<div class="select">
+                        <div class="selectBtn" data-type="firstOption" id="' . $selectName . 'Button"><i class="fas fa-map-marker-alt"></i>' . $defaultText . '</div>
+                        <select name="' . $selectName . '" id="' . $selectName . '" class="selectDropdown">';
+        $options .= '<option value="" disabled selected>' . $defaultText . '</option>';
         // Loop through each row in the result set
         while ($row = mysqli_fetch_assoc($result)) {
             // Append an option tag for each destination
-            $options .= '<div class="option" data-type="' . $row['destination_id'] . '" data-name="' . $row['name'] . '"><i class="fas fa-map-marker-alt"></i>' . $row['name'] . '</div>';
+            $options .= '<option value="' . $row['destination_id'] . '">' . $row['name'] . '</option>';
         }
-        // Close the selectDropdown div and return the generated options
-        $options .= '</div></div>';
+        // Close the select element and return the generated options
+        $options .= '</select></div>';
         return $options;
     } else {
         // Return an empty string if query fails
         return '';
     }
 }
+
+
 
 
 function generateDestinationOptionsx($conn, $selectName, $defaultText)
@@ -73,21 +76,24 @@ function generateDestinationOptionsx($conn, $selectName, $defaultText)
     if ($result) {
         // Initialize an empty string to store the options
         $options = '<div class="select" >
-                        <div class="selectBtn" data-type="firstOption" id="fromDestination"><i class="fas fa-map-marker-alt"></i>' . $defaultText . '</div>
-                        <div class="selectDropdown">';
+        <div class="selectBtn" data-type="firstOption"  ><i class="fas fa-map-marker-alt"></i>' . $defaultText . '</div>
+
+                        <select name="' . $selectName . '" id="' . $selectName . '" class="selectDropdown">';
+        $options .= '<option value="" disabled selected>' . $defaultText . '</option>';
         // Loop through each row in the result set
         while ($row = mysqli_fetch_assoc($result)) {
             // Append an option tag for each destination
-            $options .= '<div class="option" data-type="' . $row['destination_id'] . '" data-name="' . $row['name'] . '"><i class="fas fa-map-marker-alt"></i>' . $row['name'] . '</div>';
+            $options .= '<option value="' . $row['destination_id'] . '">' . $row['name'] . '</option>';
         }
-        // Close the selectDropdown div and return the generated options
-        $options .= '</div></div>';
+        // Close the select element and return the generated options
+        $options .= '</div></select></div>';
         return $options;
     } else {
         // Return an empty string if query fails
         return '';
     }
 }
+
 
 
 

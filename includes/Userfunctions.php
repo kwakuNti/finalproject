@@ -86,3 +86,68 @@ function getUserProfileImage($user_id) {
     return $img;
 }
 
+function getFlightsBookedCount($user_id) {
+    global $conn;
+
+    $sql = "SELECT COUNT(*) AS booked_count FROM Bookings WHERE user_id = ?";
+    
+    $stmt = mysqli_stmt_init($conn);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        // Handle error if statement preparation fails
+        return false;
+    } else {
+        mysqli_stmt_bind_param($stmt, "i", $user_id);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        $row = mysqli_fetch_assoc($result);
+        return $row['booked_count'];
+    }
+}
+
+// Function to get the count of flights taken by the user
+function getFlightsTakenCount($user_id) {
+    global $conn;
+
+    $sql = "SELECT COUNT(*) AS taken_count FROM Bookings b INNER JOIN Flights f ON b.flight_id = f.flight_id WHERE b.user_id = ? AND f.arrival_datetime < NOW()";
+    
+    $stmt = mysqli_stmt_init($conn);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        // Handle error if statement preparation fails
+        return false;
+    } else {
+        mysqli_stmt_bind_param($stmt, "i", $user_id);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        $row = mysqli_fetch_assoc($result);
+        return $row['taken_count'];
+    }
+}
+
+
+
+function getUserFlightImages($user_id) {
+    // Assuming you have a database connection
+global $conn;
+    // Initialize an empty array to store image URLs
+    $images = array();
+
+    $sql = "SELECT D.image_url
+            FROM Flights F
+            JOIN Destinations D ON F.destination_destination_id = D.destination_id
+            JOIN Bookings B ON F.flight_id = B.flight_id
+            WHERE B.user_id = ?";
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "i", $user_id);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
+    // Loop through the result set and add image URLs to the array
+    while ($row = mysqli_fetch_assoc($result)) {
+        $images[] = $row['image_url'];
+    }
+
+
+
+    // Return the array of image URLs
+    return $images;
+}

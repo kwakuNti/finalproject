@@ -3,7 +3,7 @@ include '../config/core.php';
 include '../includes/Userfunctions.php';
 include '../includes/destinationfunctions.php';
 checkLogin();
-
+checkUserRole();
 // Check if the session flag for animation has been set
 $animationPlayed = isset($_SESSION['animation_played']) && $_SESSION['animation_played'];
 
@@ -95,7 +95,7 @@ if (!hasProfilePicture($_SESSION['user_id'])) {
     <nav>
     <div class="nav__logo">CliffCo Airways</div>
         <ul class="nav__links">
-            <li class="link"><a href="../templates/calender.php">Your Schedule</a></li>
+            <li class="link"><a href="../templates/myflights.php">My Flights</a></li>
             <!-- <li class="link"><a href="../templates/profile.php">Profile</a></li> -->
             <li class="link"><a href="../templates/settings.php">Settings</a>
                 <ul class="sub-menu">
