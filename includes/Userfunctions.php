@@ -162,3 +162,77 @@ global $conn;
     // Return the array of image URLs
     return $images;
 }
+
+
+function displayTopTravelers($conn) {
+    // Query to retrieve user travel data
+    $sql = "SELECT u.first_name, u.last_name, u.profile_picture, COUNT(b.booking_id) AS total_trips
+            FROM Users u
+            LEFT JOIN Bookings b ON u.user_id = b.user_id
+            GROUP BY u.user_id
+            ORDER BY total_trips DESC
+            LIMIT 4";
+    $result = mysqli_query($conn, $sql);
+
+    // Check if there are any results
+    if (mysqli_num_rows($result) > 0) {
+        // Loop through the results to display each user
+        while ($row = mysqli_fetch_assoc($result)) {
+            echo '<div class="travellers__card">';
+            echo '<img src="' . $row['profile_picture'] . '" alt="traveller" />';
+            echo '<div class="travellers__card__content">';
+            echo '<img src="' . $row['profile_picture'] . '" alt="client" />';
+            echo '<h4>' . $row['first_name'] . ' ' . $row['last_name'] . '</h4>';
+            echo '<p>Total Trips: ' . $row['total_trips'] . '</p>';
+            echo '</div>';
+            echo '</div>';
+        }
+    } else {
+        echo 'No users found.';
+    }
+
+    // Free result set
+    mysqli_free_result($result);
+}
+
+
+
+function getUserBirthday($userid)
+{
+    global $conn;
+
+    $stmt = $conn->prepare("SELECT date_of_birth FROM Users WHERE user_id = ?");
+    $stmt->bind_param("s", $userid);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $birthday = $row["date_of_birth"];
+    } else {
+        $birthday = "Unknown";
+    }
+
+    return $birthday;
+}
+
+function getUserPhoneNumber($userid)
+{
+    global $conn;
+
+    $stmt = $conn->prepare("SELECT mobile_number FROM Users WHERE user_id = ?");
+    $stmt->bind_param("i", $userid);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $phoneNumber = $row["mobile_number"];
+    } else {
+        $phoneNumber = "Unknown";
+    }
+
+    return $phoneNumber;
+}
+
+

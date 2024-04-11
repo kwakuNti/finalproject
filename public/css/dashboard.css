@@ -285,7 +285,14 @@ nav {
 .memories {
   background-color: var(--extra-light);
 }
+   /* Add CSS styles for hover effect */
+   .memories__card {
+    transition: transform 0.3s ease;
+}
 
+.memories__card:hover {
+    transform: scale(1.05);
+}
 .memories__header {
   display: flex;
   align-items: center;
@@ -789,3 +796,96 @@ opacity: 0;
         border-color: #007bff;
         box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
     }
+
+
+
+    /* CSS adjustments for smaller screens */
+@media (max-width: 600px) {
+  nav {
+    flex-direction: column; /* Stack items vertically */
+    align-items: center;
+ /* Center items horizontally */
+  }
+
+  .nav__logo {
+    margin-bottom: 1rem; /* Add some space below the logo */
+  }
+
+  .nav__links {
+    flex-direction: column; /* Stack items vertically */
+    text-align: center; /* Center text */
+    width: 100%; /* Full width */
+  }
+
+  .nav__links.active {
+    display: flex; /* Show the navigation links when active */
+  }
+
+  .nav__links li {
+    margin-bottom: 1rem; /* Add space between links */
+  }
+
+  .btn {
+    margin-top: 1rem; /* Add space between logo and button */
+  }
+}
+
+/* CSS adjustments for smaller screens */
+@media (max-width: 900px) {
+  nav {
+    flex-direction: column; /* Stack items vertically */
+    align-items: center;
+  }
+
+  .nav__logo {
+    margin-bottom: 1rem; /* Add some space below the logo */
+  }
+
+  .nav__links {
+    flex-direction: column; /* Stack items vertically */
+    text-align: center; /* Center text */
+    width: 100%; /* Full width */
+  }
+
+  .nav__links.active {
+    display: flex; /* Show the navigation links when active */
+  }
+
+  .nav__links li {
+    margin-bottom: 1rem; /* Add space between links */
+  }
+
+  .btn {
+    margin-top: 1rem; /* Add space between logo and button */
+  }
+}
+
+/* CSS adjustments for smaller screens */
+@media (max-width: 480px) {
+  nav {
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center items horizontally */
+  }
+
+  .nav__logo {
+    margin-bottom: 1rem; /* Add some space below the logo */
+  }
+
+  .nav__links {
+    flex-direction: column; /* Stack items vertically */
+    text-align: center; /* Center text */
+    width: 100%; /* Full width */
+  }
+
+  .nav__links.active {
+    display: flex; /* Show the navigation links when active */
+  }
+
+  .nav__links li {
+    margin-bottom: 1rem; /* Add space between links */
+  }
+
+  .btn {
+    margin-top: 1rem; /* Add space between logo and button */
+  }
+}

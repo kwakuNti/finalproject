@@ -4,10 +4,9 @@ include '../includes/destinationfunctions.php';
 checkLogin();
 if ($_SESSION['role_id'] !== '2') {
     // Redirect the user to the dashboard.php
-    header("Location: ../templates/dashboard.php");
+    header("Location: ../templates/admin.php");
     exit;
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">

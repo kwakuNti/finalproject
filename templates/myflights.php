@@ -3,7 +3,7 @@ include '../config/core.php';
 include '../config/connection.php';
 if ($_SESSION['role_id'] !== '2') {
     // Redirect the user to the dashboard.php
-    header("Location: ../templates/dashboard.php");
+    header("Location: ../templates/admin.php");
     exit;
 }
 ?>
@@ -141,7 +141,7 @@ if ($status === 'Arrived') {
     echo '
                                     <div class="row">
                                         <div class="col-1 p-0 m-0">
-                                            <i class="fa fa-2x fa-fighter-jet mt-3 text-success"
+                                            <i class="fa fa-2x fa-fighter-jet mt-3 text-primary"
                                                 style="float: right;"></i>
                                         </div>
                                         <div class="col-10 p-0 m-0 mt-3" style="float: right;">

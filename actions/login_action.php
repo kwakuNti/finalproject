@@ -1,6 +1,8 @@
 <?php
 session_start(); // Start a session to store user data
-// Include database connection file
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 include '../config/connection.php';
 // Function to sanitize input
 function sanitize_input($input) {

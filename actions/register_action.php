@@ -54,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         mysqli_stmt_bind_param($stmt_insert_user, "sssssssi", $first_name, $last_name, $email, $password, $dob, $mobile_number, $country,$roleid);
         if (mysqli_stmt_execute($stmt_insert_user)) {
             // Registration successful, redirect to dashboard
-            header("Location: ../templates/RegisterLogin.php");
+            header("Location: ../templates/RegisterLogin.php?msg=Sucess");
             exit(); // Stop further execution of the script
         } else {
             $errors[] = "Registration failed. Please try again later.";
@@ -62,6 +62,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     // Display errors
     if (!empty($errors)) {
-        display_error($errors[0]); // Display error in toast div
+        display_error($errors[0]);
     }
 }

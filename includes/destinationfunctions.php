@@ -6,7 +6,7 @@ function displayDestinations() {
     global $conn;
 
     // SQL query to select destination name, country, and image URL
-    $sql = "SELECT name, country, image_url FROM Destinations";
+    $sql = "SELECT name, country, image_url, description  FROM Destinations";
 
     // Execute the query
     $result = $conn->query($sql);
@@ -19,6 +19,8 @@ function displayDestinations() {
             $destinationName = $row["name"];
             $country = $row["country"];
             $imageUrl = $row["image_url"];
+            $description = $row["description"];
+
 
             // Output HTML for country card
             echo '<div class="country__card">';
@@ -27,6 +29,7 @@ function displayDestinations() {
             echo '<i class="ri-map-pin-2-fill"></i>';
             echo '<span>' . $destinationName . ', ' . $country . '</span>';
             echo '</div>';
+            echo '<p class="description hidden">' . $description . '</p>';
             echo '</div>';
         }
     } else {

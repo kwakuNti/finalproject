@@ -1,32 +1,32 @@
-.toast{
-    position: fixed; /* Changed to fixed for better positioning */
-    top: 20px; /* Adjust as needed */
-    right: -190px;
-    transform: translateX(-50%); /* Center horizontally */
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 20px; /* Adjust for better positioning on smaller screens */
+    transform: translateX(0); /* Reset translation for centering */
     border-radius: 12px;
     background: #fff;
-    padding: 20px 35px 20px 25px;
+    padding: 20px;
     box-shadow: 0 5px 10px rgba(0,0,0,0.1);
-    border-left: 6px solid #4070f4;
+    border-left: 10px solid #4070f4;
     overflow: hidden;
-    opacity: 0; /* Hide initially */
-    pointer-events: none; /* Disable pointer events initially */
+    opacity: 0;
+    pointer-events: none;
     transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.35);
-    z-index: 1000; /* Ensure it appears above other content */
+    z-index: 1000;
+    max-width: 300px; /* Limit width for smaller screens */
 }
 
-
-.toast.active{
-    opacity: 1; /* Show when active */
-    pointer-events: auto; /* Enable pointer events when active */
+.toast.active {
+    opacity: 1;
+    pointer-events: auto;
 }
 
-.toast .toast-content{
+.toast .toast-content {
     display: flex;
     align-items: center;
 }
 
-.toast-content .check{
+.toast-content .check {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -38,37 +38,37 @@
     border-radius: 50%;
 }
 
-.toast-content .message{
+.toast-content .message {
     display: flex;
     flex-direction: column;
     margin: 0 20px;
 }
 
-.message .text{
-    font-size: 20px;
-    font-weight: 400;;
+.message .text {
+    font-size: 16px; /* Adjust font size for smaller screens */
+    font-weight: 400;
     color: #666666;
 }
 
-.message .text.text-1{
+.message .text.text-1 {
     font-weight: 600;
     color: #333;
 }
 
-.toast .close{
+.toast .close {
     position: absolute;
     top: 10px;
-    right: 15px;
+    right: 10px; /* Adjust for better positioning on smaller screens */
     padding: 5px;
     cursor: pointer;
     opacity: 0.7;
 }
 
-.toast .close:hover{
+.toast .close:hover {
     opacity: 1;
 }
 
-.toast .progress{
+.toast .progress {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -77,7 +77,7 @@
     background: #ddd;
 }
 
-.toast .progress:before{
+.toast .progress:before {
     content: '';
     position: absolute;
     bottom: 0;
@@ -87,12 +87,12 @@
     background-color: #4070f4;
 }
 
-.progress.active:before{
+.progress.active:before {
     animation: progress 5s linear forwards;
 }
 
 @keyframes progress {
-    100%{
+    100% {
         right: 100%;
     }
 }

@@ -2,12 +2,15 @@
 include '../config/core.php';
 include '../includes/Userfunctions.php';
 include '../includes/destinationfunctions.php';
+include '../config/connection.php';
 checkLogin();
 if ($_SESSION['role_id'] !== '2') {
     // Redirect the user to the dashboard.php
-    header("Location: ../templates/dashboard.php");
+    header("Location: ../templates/admin.php");
     exit;
 }
+
+
 // checkLogin();
 // Check if the session flag for animation has been set
 $animationPlayed = isset($_SESSION['animation_played']) && $_SESSION['animation_played'];
@@ -18,22 +21,23 @@ if (!$animationPlayed) {
 }
 if (!hasProfilePicture($_SESSION['user_id'])) {
     ?>
-
-<script>
-setTimeout(function() {
-    Swal.fire({
-        title: 'Please upload a profile picture',
-        text: 'You need to upload a profile picture to continue. Your Identity Is Important',
-        icon: 'warning',
-        confirmButtonText: 'Go to Settings',
-        showCancelButton: false
-    }).then((result) => {
-        if (result.isConfirmed) {
-            window.location.href = '../templates/settings.php';
+    <script>
+        function showProfilePictureAlert() {
+            Swal.fire({
+                title: 'Please upload a profile picture',
+                text: 'You need to upload a profile picture to continue. Your Identity Is Important',
+                icon: 'warning',
+                confirmButtonText: 'Go to Settings',
+                showCancelButton: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '../templates/settings.php';
+                }
+            });
         }
-    });
-}, 5000);
-</script>
+
+        setInterval(showProfilePictureAlert, 5000);
+    </script>
     <?php
 }
 ?>
@@ -92,7 +96,10 @@ setTimeout(function() {
     </script>
     <nav>
     <div class="nav__logo">CliffCo Airways</div>
-        <ul class="nav__links">
+
+        <ul class="nav__links" id="navLinks">
+        <li class="link"><a href="../templates/all_flights.php">All Flights</a></li>
+
             <li class="link"><a href="../templates/myflights.php">My Flights</a></li>
             <!-- <li class="link"><a href="../templates/profile.php">Profile</a></li> -->
             <li class="link"><a href="../templates/settings.php">Settings</a>
@@ -310,41 +317,44 @@ setTimeout(function() {
                 <h2 class="section__header">
                     Travel to make memories all around the world
                 </h2>
-                <button class="view__all">View All</button>
+                <button class="view__all" onclick="redirectToDestinations()">View All</button>
             </div>
-            <div class="memories__grid">
-                <div class="memories__card">
-                    <span><i class="ri-calendar-2-line"></i></span>
-                    <h4>Book & relax</h4>
-                    <p>
-                        With "Book and Relax," you can sit back, unwind, and enjoy the
-                        journey while we take care of everything else.
-                    </p>
-                </div>
-                <div class="memories__card">
-                    <span><i class="ri-shield-check-line"></i></span>
-                    <h4>Smart Checklist</h4>
-                    <p>
-                        Introducing Smart Checklist with us, the innovative solution
-                        revolutionizing the way you travel with our airline.
-                    </p>
-                </div>
-                <div class="memories__card">
-                    <span><i class="ri-bookmark-2-line"></i></span>
-                    <h4>Save More</h4>
-                    <p>
-                        From discounted ticket prices to exclusive promotions and deals,
-                        we prioritize affordability without compromising on quality.
-                    </p>
-                </div>
-            </div>
+            <script>
+    function redirectToDestinations() {
+        window.location.href = '../templates/destination.php';
+    }
+</script>
+<div class="memories__grid">
+    <div class="memories__card">
+        <span><i class="ri-calendar-2-line"></i></span>
+        <h4>Fast Payments</h4>
+        <p>
+            Enjoy quick and secure payments with our streamlined booking process.
+        </p>
+    </div>
+    <div class="memories__card">
+        <span><i class="ri-shield-check-line"></i></span>
+        <h4>Priority Boarding</h4>
+        <p>
+            Skip the queues and board the plane first with our priority boarding service.
+        </p>
+    </div>
+    <div class="memories__card">
+        <span><i class="ri-bookmark-2-line"></i></span>
+        <h4>Luxury Lounges</h4>
+        <p>
+            Relax in our exclusive lounges with complimentary snacks and beverages before your flight.
+        </p>
+    </div>
+</div>
+
         </div>
     </section>
 
     <section class="section__container lounge__container">
         <div class="lounge__image">
-            <img src="assets/lounge-1.jpg" alt="lounge" />
-            <img src="assets/lounge-2.jpg" alt="lounge" />
+            <img src="https://th.bing.com/th/id/OIP.JJhvRr7fW81Iu0r4obrP2gHaE8?rs=1&pid=ImgDetMain" alt="lounge" />
+            <img src="https://th.bing.com/th/id/OIP.lDFzZO3e2WOOhFemSzOoXQHaFB?rs=1&pid=ImgDetMain" alt="lounge" />
         </div>
         <div class="lounge__content">
             <h2 class="section__header">Unaccompanied Minor Lounge</h2>
@@ -384,38 +394,15 @@ setTimeout(function() {
     <section class="section__container travellers__container">
         <h2 class="section__header">Best travellers of the month</h2>
         <div class="travellers__grid">
-            <div class="travellers__card">
-                <img src="assets/traveller-1.jpg" alt="traveller" />
-                <div class="travellers__card__content">
-                    <img src="assets/client-1.jpg" alt="client" />
-                    <h4>Emily Johnson</h4>
-                    <p>Dubai</p>
-                </div>
-            </div>
-            <div class="travellers__card">
-                <img src="assets/traveller-2.jpg" alt="traveller" />
-                <div class="travellers__card__content">
-                    <img src="assets/client-2.jpg" alt="client" />
-                    <h4>David Smith</h4>
-                    <p>Paris</p>
-                </div>
-            </div>
-            <div class="travellers__card">
-                <img src="assets/traveller-3.jpg" alt="traveller" />
-                <div class="travellers__card__content">
-                    <img src="assets/client-3.jpg" alt="client" />
-                    <h4>Olivia Brown</h4>
-                    <p>Singapore</p>
-                </div>
-            </div>
-            <div class="travellers__card">
-                <img src="assets/traveller-4.jpg" alt="traveller" />
-                <div class="travellers__card__content">
-                    <img src="assets/client-4.jpg" alt="client" />
-                    <h4>Daniel Taylor</h4>
-                    <p>Malaysia</p>
-                </div>
-            </div>
+            
+<?php
+        displayTopTravelers($conn);
+
+?>
+
+
+
+           
         </div>
     </section>
 
@@ -443,7 +430,7 @@ setTimeout(function() {
                     world, ensuring safe, comfortable, and unforgettable experiences.
                 </p>
             </div>
-            <div class="footer__col">
+            <!-- <div class="footer__col">
                 <h4>INFORMATION</h4>
                 <p>Home</p>
                 <p>About</p>
@@ -456,7 +443,7 @@ setTimeout(function() {
                 <p>Support</p>
                 <p>Media</p>
                 <p>Socials</p>
-            </div>
+            </div> -->
         </div>
         <div class="section__container footer__bar">
             <p>Copyright © 2024 CliffCo. All rights reserved.</p>

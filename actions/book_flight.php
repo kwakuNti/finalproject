@@ -1,6 +1,12 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 include '../config/core.php';
 include '../config/connection.php';
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $origin = $_POST['fromDestination'];
@@ -14,31 +20,111 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
-    $stmt = $conn->prepare("SELECT * FROM Flights WHERE origin_destination_id = ? AND destination_destination_id = ?");
-    $stmt->bind_param("ii", $origin, $destination);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    // Check for available flights between the selected origin and destination
+    $stmt_flights = $conn->prepare("SELECT * FROM Flights WHERE origin_destination_id = ? AND destination_destination_id = ?");
+    $stmt_flights->bind_param("ii", $origin, $destination);
+    $stmt_flights->execute();
+    $result_flights = $stmt_flights->get_result();
 
-    if ($result->num_rows > 0) {
-        $flight = $result->fetch_assoc();
-        $flight_id = $flight['flight_id'];
+    if ($result_flights->num_rows > 0) {
+        // Fetch the base price for the selected destination, class, and season
+        $stmt_prices = $conn->prepare("SELECT base_price FROM Prices WHERE destination_id = ? AND class = ? AND season = 'High'");
+        $stmt_prices->bind_param("is", $destination, $class);
+        $stmt_prices->execute();
+        $result_prices = $stmt_prices->get_result();
 
-        $user_id = $_SESSION['user_id'];
-        $booking_date = date("Y-m-d");
+        if ($result_prices->num_rows > 0) {
+            $row_price = $result_prices->fetch_assoc();
+            $base_price = $row_price['base_price'];
 
-        $sql_insert = "INSERT INTO Bookings (user_id, flight_id, booking_date, class, passengers) VALUES (?, ?, ?, ?, ?)";
-        $stmt_insert = $conn->prepare($sql_insert);
-        $stmt_insert->bind_param("iissi", $user_id, $flight_id, $booking_date, $class, $passengers);
-        $stmt_insert->execute();
+            // Calculate tax and total amount
+            $tax = $base_price * 0.1;
+            $total_amount = $base_price + $tax;
 
-        header("Location: ../templates/flight.php?msg=Booking successful");
-        exit();
+            // Fetch flight details
+            $flight = $result_flights->fetch_assoc();
+            $flight_id = $flight['flight_id'];
+
+            // Get user ID and booking date
+            $user_id = $_SESSION['user_id'];
+            $booking_date = date("Y-m-d");
+
+            // Get user's name from the database
+            $stmt_user = $conn->prepare("SELECT first_name FROM Users WHERE user_id = ?");
+            $stmt_user->bind_param("i", $user_id);
+            $stmt_user->execute();
+            $result_user = $stmt_user->get_result();
+
+            if ($result_user->num_rows > 0) {
+                $user = $result_user->fetch_assoc();
+                $user_name = $user['first_name'];
+
+                // Insert booking details into the Bookings table
+                $sql_insert = "INSERT INTO Bookings (user_id, flight_id, booking_date, class, passengers, total_amount) VALUES (?, ?, ?, ?, ?, ?)";
+                $stmt_insert = $conn->prepare($sql_insert);
+                $stmt_insert->bind_param("iissid", $user_id, $flight_id, $booking_date, $class, $passengers, $total_amount);
+                $stmt_insert->execute();
+
+                // Send congratulatory email to the user
+                try {
+                    // Load Composer's autoloader
+                    require '../vendor/autoload.php';
+
+                    // Create a new PHPMailer instance
+                    $mail = new PHPMailer(true);
+
+                    // Server settings
+                    $mail->isSMTP();                                            //Send using SMTP
+                    $mail->Host = 'smtp.gmail.com';                      // Specify main and backup SMTP servers
+                    $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
+                    $mail->Username   = 'cliffco24@gmail.com';                     //SMTP username
+                    $mail->Password   = 'zsve myrn ajao xhuw';                               //SMTP password
+                    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;            //Enable implicit TLS encryption
+                    $mail->Port = 587;                                   // TCP port to connect to
+                
+
+                    // Recipients
+                    $mail->setFrom('cliffco24@gmail.com', 'CliffCo');
+                    $mail->addAddress($_SESSION['email']); // User's email address
+                    $mail->addReplyTo('info@example.com', 'Information');
+
+                    // Content
+                    $mail->isHTML(true);
+                    $mail->Subject = 'Congratulations on your flight booking!';
+                    $mail->Body = 'Dear ' . $user_name . ',<br><br>';
+                    $mail->Body .= 'Congratulations! You have successfully booked a flight with us. Here are your booking details:<br>';
+                    // Add more details like flight information, etc., as needed.
+                    $mail->Body .= '<br>Thank you for choosing our services.<br>';
+                    $mail->Body .= 'Best regards,<br>CliffCo';
+
+                    // Send the email
+                    $mail->send();
+                    // Redirect to the flight page with a success message
+                    header("Location: ../templates/flight.php?msg=Booking successful. Congratulations email sent.");
+                    exit();
+                } catch (Exception $e) {
+                    // If the email fails to send, log the error and redirect with a success message
+                    error_log("Email sending failed: " . $mail->ErrorInfo);
+                    header("Location: ../templates/flight.php?msg=Booking successful. Failed to send congratulations email.");
+                    exit();
+                }
+            } else {
+                // If user's name is not found, redirect with an error message
+                header("Location: ../templates/flight.php?msg=User's name not found.");
+                exit();
+            }
+        } else {
+            // If the base price is not found for the selected destination, class, and season, redirect with an error message
+            header("Location: ../templates/flight.php?msg=Base price not found for the selected destination, class, and season");
+            exit();
+        }
     } else {
+        // If no flights are available between the selected origin and destination, redirect with an error message
         header("Location: ../templates/flight.php?msg=No flight available for the selected route");
         exit();
     }
 } else {
+    // If the form is not submitted via POST method, redirect with an error message
     header("Location: ../templates/flight.php?msg=Form not submitted");
     exit();
 }
-

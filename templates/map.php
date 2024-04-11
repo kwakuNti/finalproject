@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Travel Modes in Directions</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <link rel="stylesheet" type="text/css" href="/style.css" />
+    <script src="/main.js"></script>
+  </head>
+  <body>
+   
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC8Gv2pDPSI0ZpCt85Pw3ot_kyR82xpis4&callback=initMap&libraries=&v=weekly"
+      async
+    ></script>
+  </body>
+</html>

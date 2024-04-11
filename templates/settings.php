@@ -4,7 +4,7 @@ include '../includes/Userfunctions.php';
 checkLogin();
 if ($_SESSION['role_id'] !== '2') {
     // Redirect the user to the dashboard.php
-    header("Location: ../templates/dashboard.php");
+    header("Location: ../templates/admin.php");
     exit;
 }
 ?>
@@ -17,12 +17,15 @@ if ($_SESSION['role_id'] !== '2') {
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet">
     <title>Settings</title>
     <link rel="stylesheet" href="../public/css/settings.css">
+    <link rel="stylesheet" href="../public/css/notification.css">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 </head>
 
 <body>
+
 <nav>
         <div class="nav__logo">CliffCo Airways</div>
         <ul class="nav__links">
@@ -66,7 +69,7 @@ if ($_SESSION['role_id'] !== '2') {
                                     class="d-block ui-w-80">
                                 <div class="media-body ml-4">
                                     <label class="btn btn-outline-primary">
-                                        Upload new photo
+                                        Select Photo And Click Upload
                                         <input type="file"name="profile_picture" class="account-settings-fileinput">
                                     </label> &nbsp;
                                     <button type="submit" name="submit" class="btn btn-primary">Upload</button>
@@ -124,22 +127,17 @@ if ($_SESSION['role_id'] !== '2') {
                             <div class="card-body pb-2">
                                 <div class="form-group">
                                     <label class="form-label">Bio</label>
-                                    <textarea class="form-control"
-                                        rows="5">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris nunc arcu, dignissim sit amet sollicitudin iaculis, vehicula id urna. Sed luctus urna nunc. Donec fermentum, magna sit amet rutrum pretium, turpis dolor molestie diam, ut lacinia diam risus eleifend sapien. Curabitur ac nibh nulla. Maecenas nec augue placerat, viverra tellus non, pulvinar risus.</textarea>
+                                    <textarea id="bioInput" class="form-control" rows="5"></textarea>
+                                    <button id="saveBioBtn" class="btn btn-primary">Save Bio</button>
+
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">Birthday</label>
-                                    <input type="text" class="form-control" value="May 3, 1995">
+                                    <input type="text" class="form-control" value="<?php echo getUserBirthday($_SESSION['user_id']); ?>" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">Country</label>
-                                    <select class="custom-select">
-                                        <option>USA</option>
-                                        <option selected>Canada</option>
-                                        <option>UK</option>
-                                        <option>Germany</option>
-                                        <option>France</option>
-                                    </select>
+                                    <input type="text" class="form-control" value="<?php echo  getUserCountry($_SESSION['user_id']); ?>" readonly>
                                 </div>
                             </div>
                             <hr class="border-light m-0">
@@ -147,7 +145,7 @@ if ($_SESSION['role_id'] !== '2') {
                                 <h6 class="mb-4">Contacts</h6>
                                 <div class="form-group">
                                     <label class="form-label">Phone</label>
-                                    <input type="text" class="form-control" value="+0 (123) 456 7891">
+                                    <input type="text" class="form-control" value="<?php echo getUserPhoneNumber($_SESSION['user_id']); ?>" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">Website</label>
@@ -286,19 +284,51 @@ if ($_SESSION['role_id'] !== '2') {
             <button type="button" class="btn btn-default">Cancel</button>
         </div>
     </div>
+    <div class="toast">
+        <div class="toast-content">
+            <i class="fas fa-solid fa-check check"></i>
+            <div class="message">
+                <span class="text text-1"></span>
+                <span class="text text-2"></span>
+            </div>
+        </div>
+        <i class="fa-solid fa-xmark close"></i>
+        <div class="progress"></div>
+    </div>
     <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const urlParams = new URLSearchParams(window.location.search);
-    const message = urlParams.get('msg');
-    if (message) {
-        swal("Notice", message, "info");
-    }
-});
-</script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const message = urlParams.get('msg');
+            if (message) {
+                // Display message in the toast div
+                document.querySelector(".toast .message .text-1").textContent = message;
+                document.querySelector(".toast").classList.add("active");
+                document.querySelector(".progress").classList.add("active");
+                setTimeout(() => {
+                    document.querySelector(".toast").classList.remove("active");
+                    setTimeout(() => {
+                        document.querySelector(".progress").classList.remove("active");
+                    }, 300);
+                }, 5000);
+            }
+        });
+
+        const closeIcon = document.querySelector(".close");
+
+        closeIcon.addEventListener("click", () => {
+            document.querySelector(".toast").classList.remove("active");
+            setTimeout(() => {
+                document.querySelector(".progress").classList.remove("active");
+            }, 300);
+        });
+    </script>
+
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../public/js/settings.js"></script>
+    <script src="../public/js/notification.js"></script>
+
     <script>
   // Get the button element
   const goBackBtn = document.getElementById('goBackBtn');
@@ -309,6 +339,37 @@ document.addEventListener('DOMContentLoaded', function () {
     window.location.href = '../templates/dashboard.php';
   });
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get the save bio button
+        const saveBioBtn = document.getElementById('saveBioBtn');
+
+        // Add click event listener to the save bio button
+        saveBioBtn.addEventListener('click', function() {
+            // Get the bio input value
+            const bio = document.getElementById('bioInput').value;
+
+            // Save the bio to local storage
+            localStorage.setItem('userBio', bio);
+
+            // Display a success message
+            alert('Bio saved successfully!');
+        });
+
+        // Function to load saved bio from local storage
+        function loadSavedBio() {
+            const savedBio = localStorage.getItem('userBio');
+            if (savedBio) {
+                // Set the bio input value to the saved bio
+                document.getElementById('bioInput').value = savedBio;
+            }
+        }
+
+        // Call the loadSavedBio function when the page loads
+        loadSavedBio();
+    });
+</script>
+
 </body>
 
 </html>

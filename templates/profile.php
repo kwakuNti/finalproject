@@ -4,7 +4,7 @@ include '../includes/Userfunctions.php';
 checkLogin();
 if ($_SESSION['role_id'] !== '2') {
     // Redirect the user to the dashboard.php
-    header("Location: ../templates/dashboard.php");
+    header("Location: ../templates/admin.php");
     exit;
 }
 // Fetch the count of flights booked by the user
@@ -51,9 +51,10 @@ $userImages = getUserFlightImages($_SESSION['user_id']);
 
                 <div class="content">
                     <p>
-                    <div class="content">
-    <textarea id="aboutTextarea" rows="5" cols="40" placeholder="Enter your interests or about"></textarea><br>
-    <button onclick="saveAbout()">Save</button>
+                    <div class="content" >
+                        <div id="userBio"></div>
+    <textarea id="aboutTextarea" rows="5" cols="40"></textarea><br>
+
 </div>
                     </p>
 
@@ -95,24 +96,19 @@ $userImages = getUserFlightImages($_SESSION['user_id']);
 </body>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
-    // Function to save about information to localStorage
-    function saveAbout() {
-        var about = document.getElementById('aboutTextarea').value;
-        localStorage.setItem('userAbout', about);
-        swal("About information saved!", {
-            icon: "success",
-        });
-    }
-
-    // Function to check if about information exists in localStorage and populate the textarea
-    function loadAbout() {
-        var storedAbout = localStorage.getItem('userAbout');
-        if (storedAbout) {
-            document.getElementById('aboutTextarea').value = storedAbout;
+    document.addEventListener('DOMContentLoaded', function() {
+        // Function to load saved bio from local storage
+        function loadSavedBio() {
+            const savedBio = localStorage.getItem('userBio');
+            if (savedBio) {
+                // Set the innerHTML of the userBio div to the saved bio
+                document.getElementById('userBio').innerHTML = savedBio;
+            }
         }
-    }
 
-    // Load about information when the page is loaded
-    window.onload = loadAbout;
+        // Call the loadSavedBio function when the page loads
+        loadSavedBio();
+    });
 </script>
+
 </html>

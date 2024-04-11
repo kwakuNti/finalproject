@@ -123,9 +123,10 @@ signUpForm.addEventListener("submit", async (e) => {
     const lastName = signUpForm.querySelector('input[name="last_name"]').value.trim();
     const email = signUpForm.querySelector('input[type="email"]').value.trim();
     const password = signUpForm.querySelector('input[type="password"]').value.trim();
-    const dob = new Date(signUpForm.querySelector('input[type="date"]').value.trim()); // Convert DOB to Date object
+    const dob = new Date(signUpForm.querySelector('input[type="date"]').value.trim());
     const mobileNumber = signUpForm.querySelector('input[type="tel"]').value.trim();
     const country = signUpForm.querySelector('input[name="country"]').value.trim();
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@(gmail\.com|yahoo\.com)$/i;
 
     if (firstName === "" || lastName === "" || email === "" || password === "" || dob === "" || mobileNumber === "" || country === "") {
         showToast("Please fill in all fields.", false);
@@ -151,8 +152,7 @@ signUpForm.addEventListener("submit", async (e) => {
 
     // Validate phone number format
     // Assuming mobile number includes country code, for example: +1234567890
-    const phoneRegex = /^\+\d{1,3}\d{9}$/;
-    if (!phoneRegex.test(mobileNumber)) {
+    const phoneRegex = /^(\+?\d{1,3}[- ]?)?(0?\d{10}|\(\d{3}\)[- ]?\d{3}[- ]?\d{4}|\+\d{1,3}[- ]?\d{3}[- ]?\d{3}[- ]?\d{4})$/;        if (!phoneRegex.test(mobileNumber)) {
         showToast("Please enter a valid phone number with country code.", false);
         return;
     }

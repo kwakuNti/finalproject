@@ -1,0 +1,264 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat|Open+Sans|Roboto');
+*{
+ margin:0;
+ padding: 0;
+ outline: 0;
+}
+.filter{
+ position: absolute;
+ left: 0;
+ top: 0;
+ bottom: 0;
+ right: 0;
+ z-index: 1;
+ background: rgb(233,76,161);
+background: -moz-linear-gradient(90deg, rgba(233,76,161,1) 0%, rgba(199,74,233,1) 100%);
+background: -webkit-linear-gradient(90deg, rgba(233,76,161,1) 0%, rgba(199,74,233,1) 100%);
+background: linear-gradient(90deg, rgba(233,76,161,1) 0%, rgba(199,74,233,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#e94ca1",endColorstr="#c74ae9",GradientType=1);
+opacity: .7;
+}
+table{
+ position: absolute;
+ z-index: 2;
+ left: 50%;
+ top: 50%;
+ transform: translate(-50%,-50%);
+ width: 60%; 
+ border-collapse: collapse;
+ border-spacing: 0;
+ box-shadow: 0 2px 15px rgba(64,64,64,.7);
+ border-radius: 12px 12px 0 0;
+ overflow: hidden;
+
+}
+td , th{
+ padding: 15px 20px;
+ text-align: center;
+ 
+
+}
+th{
+ background-color: #3d5cb8;
+ color: #fafafa;
+ font-family: 'Open Sans',Sans-serif;
+ font-weight: 200;
+ text-transform: uppercase;
+
+}
+tr{
+ width: 100%;
+ background-color: #fafafa;
+ font-family: 'Montserrat', sans-serif;
+}
+tr:nth-child(even){
+ background-color: #eeeeee;
+}
+:root {
+    --primary-color: #3d5cb8;
+    --primary-color-dark: #334c99;
+    --text-dark: #0f172a;
+    --text-light: #64748b;
+    --extra-light: #f1f5f9;
+    --white: #ffffff;
+    --max-width: 1200px;
+  }
+  
+  
+  
+  .section__container {
+    max-width: var(--max-width);
+    margin: auto;
+    padding: 5rem 1rem;
+  }
+  
+  .section__header {
+    font-size: 2.5rem;
+    font-weight: 600;
+    line-height: 3rem;
+    color: var(--text-dark);
+  }
+  
+  .btn {
+    padding: 0.75rem 2rem;
+    outline: none;
+    border: none;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--white);
+    background-color: var(--primary-color);
+    border-radius: 2rem;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .btn:hover {
+    background-color: var(--primary-color-dark);
+  }
+  
+  a {
+    text-decoration: none;
+  }
+  
+  img {
+    width: 100%;
+    display: flex;
+  }
+  
+  nav {
+    max-width: var(--max-width);
+    margin: auto;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  
+  .nav__logo {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-dark);
+  }
+  
+  .nav__links {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+  
+  .link a {
+    font-weight: 500;
+    color: var(--text-light);
+    transition: 0.3s;
+  }
+  
+  .link a:hover {
+    color: var(--text-dark);
+  }
+  
+  .header__container .section__header {
+    text-align: center;
+    font-size: 3rem;
+    line-height: 4rem;
+  }
+  
+  .booking__container {
+    border-radius: 2rem;
+    border: 1px solid var(--extra-light);
+    box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.1);
+  }
+  
+  .booking__nav {
+    max-width: 600px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    background-color: var(--extra-light);
+    border-radius: 5px;
+  }
+  
+  .booking__nav span {
+    flex: 1;
+    padding: 1rem 2rem;
+    font-weight: 500;
+    color: var(--text-light);
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .booking__nav span:nth-child(2) {
+    color: var(--white);
+    background-color: var(--primary-color);
+  }
+  
+  .booking__container form {
+    margin-top: 4rem;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr) auto;
+    gap: 1rem;
+  }
+  
+  .booking__container .input__content {
+    width: 100%;
+  }
+  
+  .booking__container .form__group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .booking__container .form__group span {
+    padding: 10px;
+    font-size: 1.5rem;
+    color: var(--text-dark);
+    background-color: var(--extra-light);
+    border-radius: 1rem;
+  }
+  
+  .booking__container .input__group {
+    width: 100%;
+    position: relative;
+  }
+  
+  .booking__container label {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--text-dark);
+    pointer-events: none;
+    transition: 0.3s;
+  }
+  
+  .booking__container input {
+    width: 100%;
+    padding: 10px 0;
+    font-size: 1rem;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid var(--primary-color);
+    color: var(--text-dark);
+  }
+  
+  .booking__container input:focus ~ label {
+    font-size: 0.8rem;
+    top: 0;
+  }
+  /* Your existing CSS code */
+  /* Add this CSS for dropdown menu */
+  
+  /* Sub-menu styles */
+  .nav__links li ul.sub-menu {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    border-radius: 4px;
+  }
+  
+  .nav__links li:hover ul.sub-menu {
+    display: block;
+  }
+  
+  .nav__links li ul.sub-menu li {
+    display: block;
+    margin-top: 8px;
+  }
+  
+  .nav__links li ul.sub-menu li a {
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+  }
+  
+  .nav__links li ul.sub-menu li a:hover {
+    color: #007bff;
+  }
+  

@@ -79,7 +79,7 @@ $(document).ready(function() {
 
         // Fetch and display prices
         $.ajax({
-            url: '../includes/get_prices.php',
+            url: '../includes/get_pricesx.php',
             method: 'POST',
             data: {
                 from: from,
