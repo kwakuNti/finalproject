@@ -31,6 +31,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $mobile_number = sanitize_input($_POST["mobile_number"]);
     $country = sanitize_input($_POST["country"]);
     $roleid = 2;
+
+    $activation_hash = md5(uniqid(rand(), true));
+
     // Validate inputs
     if (empty($first_name) || empty($last_name) || empty($email) || empty($_POST["password"]) || empty($dob) || empty($mobile_number) || empty($country)) {
         $errors[] = "All fields are required.";
@@ -48,10 +51,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // If no errors, proceed with registration
     if (empty($errors)) {
         // Prepare SQL statement for insertion
-        $sql_insert_user = "INSERT INTO Users (first_name, last_name, email, password, date_of_birth, mobile_number, country,role_id)
-                            VALUES (?, ?, ?, ?, ?, ?, ?,?)";
+        $sql_insert_user = "INSERT INTO Users (first_name, last_name, email, password, date_of_birth, mobile_number, country,role_id,account_activation_hash)
+                            VALUES (?, ?, ?, ?, ?, ?, ?,?,?)";
         $stmt_insert_user = mysqli_prepare($conn, $sql_insert_user);
-        mysqli_stmt_bind_param($stmt_insert_user, "sssssssi", $first_name, $last_name, $email, $password, $dob, $mobile_number, $country,$roleid);
+        mysqli_stmt_bind_param($stmt_insert_user, "sssssssis", $first_name, $last_name, $email, $password, $dob, $mobile_number, $country,$roleid,$activation_hash);
         if (mysqli_stmt_execute($stmt_insert_user)) {
             // Registration successful, redirect to dashboard
             header("Location: ../templates/RegisterLogin.php?msg=Sucess");

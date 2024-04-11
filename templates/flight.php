@@ -1,6 +1,7 @@
 <?php
 include '../config/core.php';
 include '../includes/destinationfunctions.php';
+include '../includes/Userfunctions.php';
 checkLogin();
 if ($_SESSION['role_id'] !== '2') {
     // Redirect the user to the dashboard.php
@@ -23,6 +24,7 @@ if ($_SESSION['role_id'] !== '2') {
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
 
 
 

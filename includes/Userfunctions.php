@@ -235,4 +235,31 @@ function getUserPhoneNumber($userid)
     return $phoneNumber;
 }
 
+// Function to check if a user's email is verified
+function isEmailVerified($email) {
+    global $conn;
+    // Prepare SQL statement to fetch activation hash for the given email
+    $sql = "SELECT account_activation_hash FROM Users WHERE email = ?";
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "s", $email);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_store_result($stmt);
+    // If a row is found for the email, check if the activation hash is not null
+    if (mysqli_stmt_num_rows($stmt) > 0) {
+        mysqli_stmt_bind_result($stmt, $activation_hash);
+        mysqli_stmt_fetch($stmt);
+        // Check if activation hash is null
+        if (is_null($activation_hash)) {
+            // Activation hash is null, email is verified
+            return true;
+        } else {
+            // Activation hash exists, email is not verified
+            return false;
+        }
+    } else {
+        // No row found for the email
+        return false;
+    }
+}
+
 

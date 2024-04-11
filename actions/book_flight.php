@@ -2,13 +2,25 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
+
 include '../config/core.php';
 include '../config/connection.php';
+include '../includes/Userfunctions.php';
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
-
+                   
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+     // Check if the user's email is verified before allowing flight booking
+     if (!isEmailVerified($_SESSION['email'])) {
+        // If the email is not verified, redirect to the settings page with a message
+        header("Location: ../templates/settings.php?msg=Please verify your email before booking a flight.");
+        exit();
+    }
+    
     $origin = $_POST['fromDestination'];
     $destination = $_POST['toDestination'];
     $departureDate = $_POST['departureDate'];
@@ -19,6 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header("Location: ../templates/flight.php?msg=Please fill out all fields for one-way booking unsuccessful");
         exit();
     }
+
 
     // Check for available flights between the selected origin and destination
     $stmt_flights = $conn->prepare("SELECT * FROM Flights WHERE origin_destination_id = ? AND destination_destination_id = ?");
@@ -59,6 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $user = $result_user->fetch_assoc();
                 $user_name = $user['first_name'];
 
+
                 // Insert booking details into the Bookings table
                 $sql_insert = "INSERT INTO Bookings (user_id, flight_id, booking_date, class, passengers, total_amount) VALUES (?, ?, ?, ?, ?, ?)";
                 $stmt_insert = $conn->prepare($sql_insert);
@@ -87,6 +101,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $mail->setFrom('cliffco24@gmail.com', 'CliffCo');
                     $mail->addAddress($_SESSION['email']); // User's email address
                     $mail->addReplyTo('info@example.com', 'Information');
+                    $mail->addCC('cc@example.com');
+                    $mail->addBCC('bcc@example.com');
 
                     // Content
                     $mail->isHTML(true);

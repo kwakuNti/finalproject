@@ -278,3 +278,8 @@ INSERT INTO Roles (role_name, description) VALUES
 ALTER TABLE Users
 ADD CONSTRAINT fk_user_role
 FOREIGN KEY (role_id) REFERENCES Roles(role_id);
+
+
+ALTER TABLE Users
+ADD account_activation_hash VARCHAR(64) NULL DEFAULT NULL AFTER role_id,
+ADD UNIQUE (account_activation_hash);
