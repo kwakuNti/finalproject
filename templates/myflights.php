@@ -177,6 +177,7 @@ if ($status === 'Arrived') {
                                         role="alert">
                                         '.$status.'
                                     </div>
+                                    <button class="btn btn-primary mt-2" onclick="window.location.href=\'../templates/map.php?origin='.$row['origin'].'&destination='.$row['destination'].'\'">See on Map</button>
                                 </div>
                             </div> ';
                               }
