@@ -22,7 +22,7 @@
     <div id="result"></div>
     <div id="map"></div>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKN6GviC9AcmwO3983l6zQEAiiLV71DWA&libraries=geometry,places"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=apikey"></script>
     <script>
         const form = document.getElementById('distance-form');
         const resultDiv = document.getElementById('result');
