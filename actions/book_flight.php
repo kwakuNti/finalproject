@@ -11,16 +11,16 @@ include '../includes/Userfunctions.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
-                   
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-     // Check if the user's email is verified before allowing flight booking
-     if (!isEmailVerified($_SESSION['email'])) {
+    // Check if the user's email is verified before allowing flight booking
+    if (!isEmailVerified($_SESSION['email'])) {
         // If the email is not verified, redirect to the settings page with a message
         header("Location: ../templates/settings.php?msg=Please verify your email before booking a flight.");
         exit();
     }
-    
+
     $origin = $_POST['fromDestination'];
     $destination = $_POST['toDestination'];
     $departureDate = $_POST['departureDate'];
@@ -74,10 +74,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
                 // Insert booking details into the Bookings table
-                $sql_insert = "INSERT INTO Bookings (user_id, flight_id, booking_date, class, passengers, total_amount) VALUES (?, ?, ?, ?, ?, ?)";
-                $stmt_insert = $conn->prepare($sql_insert);
-                $stmt_insert->bind_param("iissid", $user_id, $flight_id, $booking_date, $class, $passengers, $total_amount);
-                $stmt_insert->execute();
+                // Insert booking details into the Bookings table
+                $sql_insert_booking = "INSERT INTO Bookings (user_id, flight_id, booking_date, class, passengers, total_amount) VALUES (?, ?, ?, ?, ?, ?)";
+                $stmt_insert_booking = $conn->prepare($sql_insert_booking);
+                $stmt_insert_booking->bind_param("iissid", $user_id, $flight_id, $booking_date, $class, $passengers, $total_amount);
+                $stmt_insert_booking->execute();
+                $booking_id = $stmt_insert_booking->insert_id; // Retrieve the booking ID
+
+                // Insert booking details into the Schedules table
+                $sql_insert_schedule = "INSERT INTO Schedules (user_id, booking_id) VALUES (?, ?)";
+                $stmt_insert_schedule = $conn->prepare($sql_insert_schedule);
+                $stmt_insert_schedule->bind_param("ii", $user_id, $booking_id);
+                $stmt_insert_schedule->execute();
+
 
                 // Send congratulatory email to the user
                 try {
@@ -95,7 +104,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $mail->Password   = 'zsve myrn ajao xhuw';                               //SMTP password
                     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;            //Enable implicit TLS encryption
                     $mail->Port = 587;                                   // TCP port to connect to
-                
+
 
                     // Recipients
                     $mail->setFrom('cliffco24@gmail.com', 'CliffCo');

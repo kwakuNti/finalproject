@@ -33,7 +33,7 @@ $(document).ready(function() {
         event.preventDefault(); // Prevent form submission
 
         // Get form inputs
-        var from = $('#fromDestination').val();
+        var from = $('#toDestination').val();
         var to = $('#toDestination').val();
         var departureDate = $('#departureDate').val();
         var arrivalDate = $('#arrivalDate').val();

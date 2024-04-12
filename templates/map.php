@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Distance</title>
     <style>
         #map {
-            height: 700px;
+            height: 100vh;
             width: 100%;
         }
     </style>
 </head>
+
 <body>
     <div id="result"></div>
     <div id="map"></div>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=apikey
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKN6GviC9AcmwO3983l6zQEAiiLV71DWA
 "></script>
     <script>
         const resultDiv = document.getElementById('result');
@@ -23,7 +25,10 @@
         function initMap() {
             map = new google.maps.Map(mapDiv, {
                 zoom: 7,
-                center: { lat: 0, lng: 0 },
+                center: {
+                    lat: 0,
+                    lng: 0
+                },
             });
 
             directionsService = new google.maps.DirectionsService();
@@ -32,7 +37,7 @@
                 suppressMarkers: true,
                 polylineOptions: {
                     strokeColor: '#4285F4', // Set the color of the polyline to a darker blue
-                    strokeWeight: 10, // Increase the thickness of the polyline
+                    strokeWeight: 7, // Increase the thickness of the polyline
                 },
             });
 
@@ -47,6 +52,7 @@
 
         function calculateAirDistance(origin, destination) {
             const service = new google.maps.DistanceMatrixService();
+
             service.getDistanceMatrix({
                 origins: [origin],
                 destinations: [destination],
@@ -55,6 +61,8 @@
                 avoidHighways: false,
                 avoidTolls: false,
             }, (response, status) => {
+                console.log(response); // Log the response to the console
+
                 if (status === google.maps.DistanceMatrixStatus.OK) {
                     const distance = response.rows[0].elements[0].distance.text;
                     resultDiv.innerHTML = `Distance by plane: ${distance}`;
@@ -79,14 +87,15 @@
                 if (status === google.maps.DirectionsStatus.OK) {
                     directionsRenderer.setDirections(response);
                     const planeIcon = {
-                        path: 'M256,0C156.698,0,76.802,79.891,76.802,179.197c0,71.83,36.458,133.055,91.026,164.095l72.425,119.701c2.737,4.521,7.839,7.305,13.422,7.305c5.585,0,10.688-2.784,13.425-7.305l72.426-119.701c54.568-31.04,91.026-92.265,91.026-164.095C435.198,79.891,355.302,0,256,0z M256,276.196c-53.091,0-96.198-43.107-96.198-96.198c0-53.091,43.107-96.197,96.198-96.197c53.091,0,96.197,43.106,96.197,96.197C352.197,233.089,309.091,276.196,256,276.196z',
-                        fillColor: '#FFFFFF', // White fill
+                        path: "M22.5 7.5l-20 5 7.5 5 2.5 10 5-15 5 15 2.5-10 7.5-5-20-5z",
+                        fillColor: "#FFFFFF", // White fill
                         fillOpacity: 1,
-                        scale: 0.1, // Scale down the icon size (adjust as needed)
-                        strokeColor: 'black', // Optional black outline
-                        strokeWeight: 1, // Optional outline thickness
-                        anchor: new google.maps.Point(256, 256), // Center the icon
+                        scale: 2.5, // Scale up the icon size (adjust as needed)
+                        strokeColor: "black", // Optional black outline
+                        strokeWeight: 0.5, // Optional outline thickness
                     };
+
+
 
                     const planeMarker = new google.maps.Marker({
                         position: response.routes[0].overview_path[Math.floor(response.routes[0].overview_path.length / 2)],
@@ -102,4 +111,5 @@
         initMap();
     </script>
 </body>
+
 </html>

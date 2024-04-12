@@ -18,6 +18,12 @@ if ($_SESSION['role_id'] !== '2') {
     <title>Settings</title>
     <link rel="stylesheet" href="../public/css/settings.css">
     <link rel="stylesheet" href="../public/css/notification.css">
+    <link rel="icon" href="../assets/images/brand.png" type="image/x-icon">
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon_io/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon_io/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="../assets/favicon_io/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="../assets/favicon_io/android-chrome-512x512.png">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -31,6 +37,7 @@ if ($_SESSION['role_id'] !== '2') {
         <ul class="nav__links">
             <li class="link"><a href="../templates/myflights.php">Your Schedule</a></li>
             <li class="link"><a href="../templates/profile.php">Profile</a>
+            <li class="link"><a href="../templates/dashboard.php">Go Back</a>
 
             </li>
 
@@ -95,16 +102,16 @@ if ($_SESSION['role_id'] !== '2') {
 
     if ($activation_hash === null) { // Email is verified
         ?>
-        <div class="alert alert-success mt-3">
-            Email verified
-        </div>
+            <div class="alert alert-success mt-3">
+                Email verified
+            </div>
     <?php } else { // Email is not verified ?>
-        <div class="alert alert-warning mt-3">
-            Your email is not confirmed. Please check your inbox.<br>
-            <form action="../actions/account_activate.php" method="post">
-                <button type="submit" name="send_confirmation" class="btn btn-link p-0 m-0 text-primary">Send confirmation</button>
-            </form>
-        </div>
+            <div class="alert alert-warning mt-3">
+                Your email is not confirmed.<br>
+                <form action="../actions/account_activate.php" method="post">
+                    <button type="submit" name="send_confirmation" class="btn btn-link p-0 m-0 text-primary">Send confirmation</button>
+                </form>
+            </div>
     <?php } ?>
 </div>
 
@@ -127,7 +134,7 @@ if ($_SESSION['role_id'] !== '2') {
 
         <div class="form-group">
             <label class="form-label">Country</label>
-            <input type="text" class="form-control" value="<?php echo  getUserCountry($_SESSION['user_id']); ?>" readonly>
+            <input type="text" class="form-control" value="<?php echo getUserCountry($_SESSION['user_id']); ?>" readonly>
         </div>
     </div>
     </div>
@@ -166,7 +173,7 @@ if ($_SESSION['role_id'] !== '2') {
             </div>
             <div class="form-group">
                 <label class="form-label">Country</label>
-                <input type="text" class="form-control" value="<?php echo  getUserCountry($_SESSION['user_id']); ?>" readonly>
+                <input type="text" class="form-control" value="<?php echo getUserCountry($_SESSION['user_id']); ?>" readonly>
             </div>
         </div>
         <hr class="border-light m-0">

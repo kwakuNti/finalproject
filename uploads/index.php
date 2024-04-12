@@ -1,4 +1,4 @@
 <?php
-header("Location: ../templates/RegisterLogin.php");
+header("Location: ../finalproject//templates/RegisterLogin.php");
 exit();
 ?>

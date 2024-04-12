@@ -1,4 +1,8 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 // Include necessary files
 include '../config/connection.php';
 include '../config/core.php';
@@ -25,4 +29,3 @@ if ($stmt->affected_rows === 0) {
 // Redirect the user to the settings page with a success message
 header("Location: ../templates/settings.php?msg=Successfully Verified");
 exit;
-?>

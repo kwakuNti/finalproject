@@ -21,24 +21,24 @@ if (!$animationPlayed) {
 }
 if (!hasProfilePicture($_SESSION['user_id'])) {
     ?>
-    <script>
-        function showProfilePictureAlert() {
-            Swal.fire({
-                title: 'Please upload a profile picture',
-                text: 'You need to upload a profile picture to continue. Your Identity Is Important',
-                icon: 'warning',
-                confirmButtonText: 'Go to Settings',
-                showCancelButton: false
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = '../templates/settings.php';
+            <script>
+                function showProfilePictureAlert() {
+                    Swal.fire({
+                        title: 'Please upload a profile picture',
+                        text: 'You need to upload a profile picture to continue. Your Identity Is Important',
+                        icon: 'warning',
+                        confirmButtonText: 'Go to Settings',
+                        showCancelButton: false
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = '../templates/settings.php';
+                        }
+                    });
                 }
-            });
-        }
 
-        setInterval(showProfilePictureAlert, 5000);
-    </script>
-    <?php
+                setInterval(showProfilePictureAlert, 5000);
+            </script>
+            <?php
 }
 ?>
 <!DOCTYPE html>
@@ -49,6 +49,12 @@ if (!hasProfilePicture($_SESSION['user_id'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.4.0/fonts/remixicon.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins&display=swap">
+    <link rel="icon" href="../assets/images/brand.png" type="image/x-icon">
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon_io/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon_io/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="../assets/favicon_io/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="../assets/favicon_io/android-chrome-512x512.png">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
@@ -57,7 +63,8 @@ if (!hasProfilePicture($_SESSION['user_id'])) {
 </head>
 
 <body>
-<div class="intro" <?php if ($animationPlayed) echo 'style="display: none;"'; ?>>
+<div class="intro" <?php if ($animationPlayed)
+    echo 'style="display: none;"'; ?>>
         <h1 class="logo-header">
             <span class="logo">Cliff</span><span class="logo">Co.</span>
         </h1>
@@ -116,6 +123,17 @@ if (!hasProfilePicture($_SESSION['user_id'])) {
         </ul>
         <button class="btn" id="logoutButton">Log out</button>
     </nav>
+    <script>
+        
+  document.addEventListener("DOMContentLoaded", function() {
+    const logoutButton = document.getElementById('logoutButton');
+    // Add click event listener to the logout button
+    logoutButton.addEventListener('click', function() {
+        // Redirect to the logout page
+        window.location.href = "../templates/Logout.php";
+    });
+});
+    </script>
     <header class="section__container header__container">
     <h1 class="section__header">
             <?php
@@ -220,7 +238,6 @@ if (!hasProfilePicture($_SESSION['user_id'])) {
                                 flightDetailsTable += '<td>' + flight.destination_destination_name + '</td>';
                                 flightDetailsTable += '<td>' + flight.departure_datetime + '</td>';
                                 flightDetailsTable += '<td>' + flight.arrival_datetime + '</td>';
-                                flightDetailsTable += '<td><button class="book-flight-btn" data-flight-id="' + flight.id + '">Book Flight</button></td>';
                                 flightDetailsTable += '</tr>';
                             }
 
@@ -232,7 +249,7 @@ if (!hasProfilePicture($_SESSION['user_id'])) {
                                 html: flightDetailsTable,
                                 icon: 'info',
                                 showCancelButton: true,
-                                confirmButtonText: 'Proceed to Booking',
+                                confirmButtonText: 'Okay',
                                 cancelButtonText: 'Cancel',
                                 showLoaderOnConfirm: true,
                                 customClass: {
@@ -396,7 +413,7 @@ if (!hasProfilePicture($_SESSION['user_id'])) {
         <div class="travellers__grid">
             
 <?php
-        displayTopTravelers($conn);
+displayTopTravelers($conn);
 
 ?>
 
