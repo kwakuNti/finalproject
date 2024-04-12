@@ -13,7 +13,7 @@
     <div id="result"></div>
     <div id="map"></div>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKN6GviC9AcmwO3983l6zQEAiiLV71DWA
+    <script src="https://maps.googleapis.com/maps/api/js?key=apikey
 "></script>
     <script>
         const resultDiv = document.getElementById('result');
